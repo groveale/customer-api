@@ -1,0 +1,127 @@
+openapi: 3.0.1
+info:
+  title: Customer Management API
+  version: 1.0.0
+  description: API for managing customer records
+servers:
+  - url: /
+paths:
+  /customer:
+    get:
+      summary: Get All Customers
+      operationId: GetAllCustomers
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: Successfully retrieved customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    
+    post:
+      summary: Create a New Customer
+      operationId: CreateCustomer
+      tags:
+        - Customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+  
+  /customer/{id}:
+    get:
+      summary: Get Customer by ID
+      operationId: GetCustomerById
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    
+    put:
+      summary: Update Customer
+      operationId: UpdateCustomer
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '204':
+          description: Customer updated successfully
+        '404':
+          description: Customer not found
+    
+    delete:
+      summary: Delete Customer
+      operationId: DeleteCustomer
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Customer deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        strategic:
+          type: boolean
+        accountOwner:
+          type: string
+        region:
+          type: string
+      required:
+        - name

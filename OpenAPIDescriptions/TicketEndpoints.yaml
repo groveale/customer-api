@@ -1,0 +1,165 @@
+openapi: 3.0.1
+info:
+  title: Ticket Management API
+  version: 1.0.0
+  description: API for managing ticket records
+servers:
+  - url: /
+paths:
+  /tickets:
+    get:
+      summary: Get All Tickets
+      operationId: GetAllTickets
+      tags:
+        - Ticket
+      responses:
+        '200':
+          description: Successfully retrieved tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+    
+    post:
+      summary: Create a New Ticket
+      operationId: CreateTicket
+      tags:
+        - Ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '201':
+          description: Ticket created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+  
+  /tickets/{id}:
+    get:
+      summary: Get Ticket by ID
+      operationId: GetTicketById
+      tags:
+        - Ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Ticket not found
+    
+    put:
+      summary: Update Ticket
+      operationId: UpdateTicket
+      tags:
+        - Ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '204':
+          description: Ticket updated successfully
+        '404':
+          description: Ticket not found
+    
+    delete:
+      summary: Delete Ticket
+      operationId: DeleteTicket
+      tags:
+        - Ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ticket deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Ticket not found
+  
+  /tickets/customer/{customerId}:
+    get:
+      summary: Get Tickets by Customer ID
+      operationId: GetTicketsByCustomerId
+      tags:
+        - Ticket
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved tickets for the customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+
+components:
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+        state:
+          type: string
+        priority:
+          type: string
+        long_Description:
+          type: string
+        assignedTo:
+          type: string
+        opened_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+        companyID:
+          type: integer
+        daysOpen:
+          type: integer
+        callerID:
+          type: integer
+      required:
+        - title
+        - state
+        - companyID

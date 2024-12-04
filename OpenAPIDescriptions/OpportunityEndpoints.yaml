@@ -1,0 +1,170 @@
+openapi: 3.0.1
+info:
+  title: Opportunity Management API
+  version: 1.0.0
+  description: API for managing opportunity records
+servers:
+  - url: /
+paths:
+  /opportunities:
+    get:
+      summary: Get All Opportunities
+      operationId: GetAllOpportunities
+      tags:
+        - Opportunity
+      responses:
+        '200':
+          description: Successfully retrieved opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+    
+    post:
+      summary: Create a New Opportunity
+      operationId: CreateOpportunity
+      tags:
+        - Opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Opportunity'
+      responses:
+        '201':
+          description: Opportunity created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+  
+  /opportunities/{id}:
+    get:
+      summary: Get Opportunity by ID
+      operationId: GetOpportunityById
+      tags:
+        - Opportunity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved opportunity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+        '404':
+          description: Opportunity not found
+    
+    put:
+      summary: Update Opportunity
+      operationId: UpdateOpportunity
+      tags:
+        - Opportunity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Opportunity'
+      responses:
+        '204':
+          description: Opportunity updated successfully
+        '404':
+          description: Opportunity not found
+    
+    delete:
+      summary: Delete Opportunity
+      operationId: DeleteOpportunity
+      tags:
+        - Opportunity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Opportunity deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+        '404':
+          description: Opportunity not found
+  
+  /opportunities/customer/{parentAccountId}:
+    get:
+      summary: Get Opportunities by Parent Account ID
+      operationId: GetOpportunitiesByParentAccountId
+      tags:
+        - Opportunity
+      parameters:
+        - name: parentAccountId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved opportunities for the parent account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+
+components:
+  schemas:
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        account:
+          type: string
+        territory:
+          type: string
+        probability:
+          type: number
+          format: float
+        stageName:
+          type: string
+        amount:
+          type: number
+          format: float
+        currency:
+          type: string
+        owner:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        closeDate:
+          type: string
+          format: date-time
+        serviceLine:
+          type: string
+        parentAccountId:
+          type: integer
+      required:
+        - account
+        - stageName
+        - amount
+        - parentAccountId
