@@ -12,7 +12,7 @@ namespace groveale.Endpoints
 
             ticketItems.MapGet("/", GetAllTickets);
             ticketItems.MapGet("/{id}", GetTicketById);
-            ticketItems.MapGet("/account/{accountName}", GetTicketsByAccountName); // New endpoint
+            ticketItems.MapGet("/customer/{customerId}", GetTicketsByCustomerId); // New endpoint
             ticketItems.MapPost("/", CreateTicket);
             ticketItems.MapPut("/{id}", UpdateTicket);
             ticketItems.MapDelete("/{id}", DeleteTicket);
@@ -27,8 +27,8 @@ namespace groveale.Endpoints
                     ? Results.Ok(ticket)
                     : Results.NotFound();
 
-        public static async Task<IResult> GetTicketsByAccountName(string accountName, TicketDb db) =>
-            Results.Ok(await db.Tickets.Where(t => t.AccountName == accountName).ToListAsync());
+        public static async Task<IResult> GetTicketsByCustomerId(int customerId, TicketDb db) =>
+            Results.Ok(await db.Tickets.Where(t => t.CompanyID == customerId).ToListAsync());
 
         public static async Task<IResult> CreateTicket(Ticket ticket, TicketDb db)
         {
@@ -44,15 +44,15 @@ namespace groveale.Endpoints
             if (ticket is null) return Results.NotFound();
 
             ticket.Title = inputTicket.Title;
-            ticket.Owner = inputTicket.Owner;
-            ticket.CustomerServiceManager = inputTicket.CustomerServiceManager;
-            ticket.CustomerName = inputTicket.CustomerName;
-            ticket.CustomerContact = inputTicket.CustomerContact;
-            ticket.Severity = inputTicket.Severity;
-            ticket.Status = inputTicket.Status;
-            ticket.DateOpened = inputTicket.DateOpened;
+            ticket.State = inputTicket.State;
+            ticket.Priority = inputTicket.Priority;
+            ticket.Long_Description = inputTicket.Long_Description;
+            ticket.AssignedTo = inputTicket.AssignedTo;
+            ticket.Opened_at = inputTicket.Opened_at;
+            ticket.Closed_at = inputTicket.Closed_at;
+            ticket.CompanyID = inputTicket.CompanyID;
             ticket.DaysOpen = inputTicket.DaysOpen;
-            ticket.AccountName = inputTicket.AccountName;
+            ticket.CallerID = inputTicket.CallerID;            
 
             await db.SaveChangesAsync();
 

@@ -6,14 +6,14 @@ namespace groveale.Models
     {
         public int Id { get; set; }
         public string? Title { get; set; }
-        public string? Owner { get; set; }
-        public string? CustomerServiceManager { get; set; }
-        public string? CustomerName { get; set; }
-        public string? CustomerContact { get; set; }
-        public string? Severity { get; set; }
-        public string? Status { get; set; }
-        public DateTime DateOpened { get; set; }
+        public string? Long_Description { get; set; } // New property
+        public string? Priority { get; set; } // New property
+        public string? CallerID { get; set; } // New property
+        public string? State { get; set; } // New property
+        public string? AssignedTo { get; set; } // New property
+        public DateTime Opened_at { get; set; } // New property
+        public DateTime? Closed_at { get; set; } // New property
+        public int CompanyID { get; set; } // New property
         public int DaysOpen { get; set; }
-        public string? AccountName { get; set; }
     }
 }

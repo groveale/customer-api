@@ -15,11 +15,11 @@ namespace groveale.Endpoints
             opportunityItems.MapPost("/", CreateOpportunity);
             opportunityItems.MapPut("/{id}", UpdateOpportunity);
             opportunityItems.MapDelete("/{id}", DeleteOpportunity);
-            opportunityItems.MapGet("/account/{accountName}", GetOpportunitiesByAccountName); // New endpoint
+            opportunityItems.MapGet("/customer/{parentAccountId}", GetOpportunitiesByParentAccountId); // New endpoint
         }
 
-        public static async Task<IResult> GetOpportunitiesByAccountName(string accountName, OpportunityDb db) =>
-            Results.Ok(await db.Opportunities.Where(o => o.AccountName == accountName).ToListAsync());
+        public static async Task<IResult> GetOpportunitiesByParentAccountId(int parentAccountId, OpportunityDb db) =>
+            Results.Ok(await db.Opportunities.Where(o => o.ParentAccountId == parentAccountId).ToListAsync());
 
         public static async Task<IResult> GetAllOpportunities(OpportunityDb db) =>
             Results.Ok(await db.Opportunities.ToListAsync());
@@ -43,9 +43,7 @@ namespace groveale.Endpoints
 
             if (opportunity is null) return Results.NotFound();
 
-            opportunity.Name = inputOpportunity.Name;
-            opportunity.Description = inputOpportunity.Description;
-            opportunity.AccountName = inputOpportunity.AccountName;
+            opportunity.Account = inputOpportunity.Account;
             opportunity.Territory = inputOpportunity.Territory;
             opportunity.Probability = inputOpportunity.Probability;
             opportunity.StageName = inputOpportunity.StageName;
@@ -54,6 +52,8 @@ namespace groveale.Endpoints
             opportunity.Owner = inputOpportunity.Owner;
             opportunity.DateCreated = inputOpportunity.DateCreated;
             opportunity.CloseDate = inputOpportunity.CloseDate;
+            opportunity.ServiceLine = inputOpportunity.ServiceLine;
+            opportunity.ParentAccountId = inputOpportunity.ParentAccountId;
 
             await db.SaveChangesAsync();
 

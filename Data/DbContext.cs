@@ -25,10 +25,10 @@ namespace groveale.Data
         public DbSet<Opportunity> Opportunities { get; set; }
     }
 
-    public class AccountDb : DbContext
+    public class CustomerDb : DbContext
     {
-        public AccountDb(DbContextOptions<AccountDb> options) : base(options) { }
+        public CustomerDb(DbContextOptions<CustomerDb> options) : base(options) { }
 
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

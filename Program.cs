@@ -11,13 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // builder.Services.AddDbContext<OpportunityDb>(opt =>
 //     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
-// builder.Services.AddDbContext<AccountDb>(opt =>
+// builder.Services.AddDbContext<CustomerDb>(opt =>
 //     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
 
 builder.Services.AddDbContext<OrderDb>(opt => opt.UseInMemoryDatabase("OrderList"));
 builder.Services.AddDbContext<TicketDb>(opt => opt.UseInMemoryDatabase("TicketList"));
 builder.Services.AddDbContext<OpportunityDb>(opt => opt.UseInMemoryDatabase("OpportunityList"));
-builder.Services.AddDbContext<AccountDb>(opt => opt.UseInMemoryDatabase("AccountList"));
+builder.Services.AddDbContext<CustomerDb>(opt => opt.UseInMemoryDatabase("CustomerList"));
 
 
 
@@ -49,7 +49,7 @@ app.UseSwaggerUi(config =>
 
 
 
-app.MapAccountEndpoints();
+app.MapCustomerEndpoints();
 app.MapTicketEndpoints();
 app.MapOpportunityEndpoints();
 app.MapOrderEndpoints();
