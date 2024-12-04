@@ -46,7 +46,7 @@ namespace groveale.Endpoints
             order.Title = inputOrder.Title;
             order.AccountName = inputOrder.AccountName;
             order.Territory = inputOrder.Territory;
-            order.Status = inputOrder.Status;
+            //order.Status = inputOrder.Status;
             order.OrderValue = inputOrder.OrderValue;
             order.Currency = inputOrder.Currency;
             order.Products = inputOrder.Products;

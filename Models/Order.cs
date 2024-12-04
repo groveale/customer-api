@@ -12,8 +12,8 @@ namespace groveale.Models
         public OrderStatus Status { get; set; }
         public decimal OrderValue { get; set; }
         public string? Currency { get; set; }
-        //public List<Product> Products { get; set; } = new List<Product>();
-        public List<string>? Products { get; set; }
+        public List<Product> Products { get; set; } = new List<Product>();
+        //public List<string>? Products { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateClosed { get; set; }
     }

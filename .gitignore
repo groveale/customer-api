@@ -1,6 +1,7 @@
+/Properties
 /.vscode
 /appsettings.Development.json
 /appsettings.json
 /bin
 /obj
-/Properties/launchSettings.json
+
