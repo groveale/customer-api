@@ -6,13 +6,14 @@ namespace groveale.Models
     public class Order
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-         public Account Account { get; set; } 
-        public string Territory { get; set; }
+        public string? Title { get; set; }
+         public string? AccountName { get; set; } 
+        public string? Territory { get; set; }
         public OrderStatus Status { get; set; }
         public decimal OrderValue { get; set; }
-        public string Currency { get; set; }
-        public List<Product> Products { get; set; } = new List<Product>();
+        public string? Currency { get; set; }
+        //public List<Product> Products { get; set; } = new List<Product>();
+        public List<string>? Products { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateClosed { get; set; }
     }

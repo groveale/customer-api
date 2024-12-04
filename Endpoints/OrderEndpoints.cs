@@ -15,14 +15,14 @@ namespace groveale.Endpoints
             orderItems.MapPost("/", CreateOrder);
             orderItems.MapPut("/{id}", UpdateOrder);
             orderItems.MapDelete("/{id}", DeleteOrder);
-             orderItems.MapGet("/account/{accountId}", GetOrdersByAccount); // New endpoint
+             orderItems.MapGet("/account/{accountName}", GetOrdersByAccountName); // New endpoint
         }
 
         public static async Task<IResult> GetAllOrders(OrderDb db) =>
             Results.Ok(await db.Orders.ToListAsync());
 
-        public static async Task<IResult> GetOrdersByAccount(int accountId, OrderDb db) =>
-            Results.Ok(await db.Orders.Where(o => o.Account.Id == accountId).ToListAsync());
+        public static async Task<IResult> GetOrdersByAccountName(string accountName, OrderDb db) =>
+            Results.Ok(await db.Orders.Where(o => o.AccountName == accountName).ToListAsync());
 
         public static async Task<IResult> GetOrderById(int id, OrderDb db) =>
             await db.Orders.FindAsync(id)
@@ -44,7 +44,7 @@ namespace groveale.Endpoints
             if (order is null) return Results.NotFound();
 
             order.Title = inputOrder.Title;
-            order.Account = inputOrder.Account;
+            order.AccountName = inputOrder.AccountName;
             order.Territory = inputOrder.Territory;
             order.Status = inputOrder.Status;
             order.OrderValue = inputOrder.OrderValue;

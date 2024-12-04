@@ -15,7 +15,10 @@
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5202",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AZURE_CLIENT_ID": "f48cd7a0-fe42-4f03-a0a2-78e439acf76a",
+        "AZURE_TENANT_ID": "d8464949-bb1d-476f-bbe8-a46293833f6d",
+        "AZURE_CLIENT_SECRET": ""
       }
     },
     "https": {

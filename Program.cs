@@ -4,15 +4,22 @@ using groveale.Data;
 using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+// builder.Services.AddDbContext<TicketDb>(opt =>
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
+// builder.Services.AddDbContext<OrderDb>(opt => 
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
 
-builder.Services.AddDbContext<OrderDb>(opt => 
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
-builder.Services.AddDbContext<TicketDb>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
-builder.Services.AddDbContext<OpportunityDb>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
-builder.Services.AddDbContext<AccountDb>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
+// builder.Services.AddDbContext<OpportunityDb>(opt =>
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
+// builder.Services.AddDbContext<AccountDb>(opt =>
+//     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
+
+builder.Services.AddDbContext<OrderDb>(opt => opt.UseInMemoryDatabase("OrderList"));
+builder.Services.AddDbContext<TicketDb>(opt => opt.UseInMemoryDatabase("TicketList"));
+builder.Services.AddDbContext<OpportunityDb>(opt => opt.UseInMemoryDatabase("OpportunityList"));
+builder.Services.AddDbContext<AccountDb>(opt => opt.UseInMemoryDatabase("AccountList"));
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
@@ -22,11 +29,14 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
-// Use Azure Managed Identity for authentication
+//Use Azure Managed Identity for authentication
 var credential = new DefaultAzureCredential();
 builder.Services.AddSingleton(credential);
 
 var app = builder.Build();
+
+// Ensure databases are created
+app.EnsureDatabasesCreated();
 
 app.UseOpenApi();
 app.UseSwaggerUi(config =>
@@ -37,14 +47,6 @@ app.UseSwaggerUi(config =>
     config.DocExpansion = "list";
 });
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
 
 app.MapOrderEndpoints();
 app.MapAccountEndpoints();

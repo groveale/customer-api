@@ -15,11 +15,11 @@ namespace groveale.Endpoints
             opportunityItems.MapPost("/", CreateOpportunity);
             opportunityItems.MapPut("/{id}", UpdateOpportunity);
             opportunityItems.MapDelete("/{id}", DeleteOpportunity);
-            opportunityItems.MapGet("/account/{accountId}", GetOpportunitiesByAccount); // New endpoint
+            opportunityItems.MapGet("/account/{accountName}", GetOpportunitiesByAccountName); // New endpoint
         }
 
-        public static async Task<IResult> GetOpportunitiesByAccount(int accountId, OpportunityDb db) =>
-            Results.Ok(await db.Opportunities.Where(o => o.Account.Id == accountId).ToListAsync());
+        public static async Task<IResult> GetOpportunitiesByAccountName(string accountName, OpportunityDb db) =>
+            Results.Ok(await db.Opportunities.Where(o => o.AccountName == accountName).ToListAsync());
 
         public static async Task<IResult> GetAllOpportunities(OpportunityDb db) =>
             Results.Ok(await db.Opportunities.ToListAsync());
@@ -45,7 +45,7 @@ namespace groveale.Endpoints
 
             opportunity.Name = inputOpportunity.Name;
             opportunity.Description = inputOpportunity.Description;
-            opportunity.Account = inputOpportunity.Account;
+            opportunity.AccountName = inputOpportunity.AccountName;
             opportunity.Territory = inputOpportunity.Territory;
             opportunity.Probability = inputOpportunity.Probability;
             opportunity.StageName = inputOpportunity.StageName;

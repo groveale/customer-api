@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace groveale.Data
 {
+    public class TicketDb : DbContext
+    {
+        public TicketDb(DbContextOptions<TicketDb> options) : base(options) { }
+
+        public DbSet<Ticket> Tickets { get; set; }
+    }
     public class OrderDb : DbContext
     {
         public OrderDb(DbContextOptions<OrderDb> options) : base(options) { }
@@ -10,12 +16,7 @@ namespace groveale.Data
         public DbSet<Order> Orders { get; set; }
     }
 
-    public class TicketDb : DbContext
-    {
-        public TicketDb(DbContextOptions<TicketDb> options) : base(options) { }
-
-        public DbSet<Ticket> Tickets { get; set; }
-    }
+    
 
     public class OpportunityDb : DbContext
     {

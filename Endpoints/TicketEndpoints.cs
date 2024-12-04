@@ -12,7 +12,7 @@ namespace groveale.Endpoints
 
             ticketItems.MapGet("/", GetAllTickets);
             ticketItems.MapGet("/{id}", GetTicketById);
-            ticketItems.MapGet("/account/{accountId}", GetTicketsByAccount); // New endpoint
+            ticketItems.MapGet("/account/{accountName}", GetTicketsByAccountName); // New endpoint
             ticketItems.MapPost("/", CreateTicket);
             ticketItems.MapPut("/{id}", UpdateTicket);
             ticketItems.MapDelete("/{id}", DeleteTicket);
@@ -27,8 +27,8 @@ namespace groveale.Endpoints
                     ? Results.Ok(ticket)
                     : Results.NotFound();
 
-        public static async Task<IResult> GetTicketsByAccount(int accountId, TicketDb db) =>
-            Results.Ok(await db.Tickets.Where(t => t.Account.Id == accountId).ToListAsync());
+        public static async Task<IResult> GetTicketsByAccountName(string accountName, TicketDb db) =>
+            Results.Ok(await db.Tickets.Where(t => t.AccountName == accountName).ToListAsync());
 
         public static async Task<IResult> CreateTicket(Ticket ticket, TicketDb db)
         {
@@ -52,7 +52,7 @@ namespace groveale.Endpoints
             ticket.Status = inputTicket.Status;
             ticket.DateOpened = inputTicket.DateOpened;
             ticket.DaysOpen = inputTicket.DaysOpen;
-            ticket.Account = inputTicket.Account;
+            ticket.AccountName = inputTicket.AccountName;
 
             await db.SaveChangesAsync();
 
