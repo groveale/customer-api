@@ -95,7 +95,7 @@ namespace groveale.Data
             if (!context.Opportunities.Any())
             {
                 context.Opportunities.AddRange(
-                    new Opportunity { ParentAccountId = 1, Account = "Contoso UK", Territory = "UK", ServiceLine = "Tech Source", Probability = 0.75, StageName = "Quote", Amount = 3750000, Currency = "£", Owner = "Cora Thomas", DateCreated = new DateTime(2024, 12, 2), CloseDate = new DateTime(2024, 12, 31) },
+                    new Opportunity { ParentAccountId = 1, Account = "Contoso", Territory = "UK", ServiceLine = "Tech Source", Probability = 0.75, StageName = "Quote", Amount = 3750000, Currency = "£", Owner = "Cora Thomas", DateCreated = new DateTime(2024, 12, 2), CloseDate = new DateTime(2024, 12, 31) },
                     new Opportunity { ParentAccountId = 2, Account = "Fabrikam", Territory = "UK", ServiceLine = "Tech Source", Probability = 0.50, StageName = "Quote", Amount = 750000, Currency = "£", Owner = "Cora Thomas", DateCreated = new DateTime(2024, 12, 9), CloseDate = new DateTime(2024, 12, 31) },
                     new Opportunity { ParentAccountId = 3, Account = "Wingtips Toys", Territory = "UK", ServiceLine = "Tech Source", Probability = 1.00, StageName = "Quote", Amount = 1500000, Currency = "£", Owner = "Cora Thomas", DateCreated = new DateTime(2024, 11, 4), CloseDate = new DateTime(2024, 12, 31) }
                 );

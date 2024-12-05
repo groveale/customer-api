@@ -1,29 +1,63 @@
-openapi: 3.0.1
+openapi: '3.0.2'
 info:
   title: Customer Management API
-  version: 1.0.0
+  version: '1.0'
   description: API for managing customer records
+
 servers:
-  - url: https://ag-customer-api.azurewebsites.net/
+  - url: https://ag-customer-api.azurewebsites.net/  # Replace with your actual server URL
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the customer
+        name:
+          type: string
+          description: Name of the customer
+        strategic:
+          type: boolean
+          description: Indicates if the customer is a strategic account
+        accountOwner:
+          type: string
+          description: Name of the account owner
+        region:
+          type: string
+          description: Geographic region of the customer
+      required:
+        - name
+
+  parameters:
+    CustomerId:
+      name: id
+      in: path
+      description: Unique identifier of the customer
+      required: true
+      schema:
+        type: integer
+
 paths:
   /customer:
     get:
-      summary: Get All Customers
+      summary: Get all customers
       operationId: GetAllCustomers
       tags:
         - Customer
       responses:
         '200':
-          description: Successfully retrieved customers
+          description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customer'
-    
+
     post:
-      summary: Create a New Customer
+      summary: Create a new customer
       operationId: CreateCustomer
       tags:
         - Customer
@@ -40,40 +74,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-  
+
   /customer/{id}:
     get:
-      summary: Get Customer by ID
+      summary: Get a specific customer by ID
       operationId: GetCustomerById
       tags:
         - Customer
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/CustomerId'
       responses:
         '200':
-          description: Successfully retrieved customer
+          description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
         '404':
           description: Customer not found
-    
+
     put:
-      summary: Update Customer
+      summary: Update an existing customer
       operationId: UpdateCustomer
       tags:
         - Customer
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/CustomerId'
       requestBody:
         required: true
         content:
@@ -85,18 +111,14 @@ paths:
           description: Customer updated successfully
         '404':
           description: Customer not found
-    
+
     delete:
-      summary: Delete Customer
+      summary: Delete a customer
       operationId: DeleteCustomer
       tags:
         - Customer
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/CustomerId'
       responses:
         '200':
           description: Customer deleted successfully
@@ -106,22 +128,3 @@ paths:
                 $ref: '#/components/schemas/Customer'
         '404':
           description: Customer not found
-
-components:
-  schemas:
-    Customer:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        strategic:
-          type: boolean
-        accountOwner:
-          type: string
-        region:
-          type: string
-      required:
-        - name

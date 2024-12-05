@@ -15,11 +15,11 @@ namespace groveale.Endpoints
             opportunityItems.MapPost("/", CreateOpportunity);
             opportunityItems.MapPut("/{id}", UpdateOpportunity);
             opportunityItems.MapDelete("/{id}", DeleteOpportunity);
-            opportunityItems.MapGet("/customer/{parentAccountId}", GetOpportunitiesByParentAccountId); // New endpoint
+            opportunityItems.MapGet("/customer/{account}", GetOpportunitiesByAccountName); // New endpoint
         }
 
-        public static async Task<IResult> GetOpportunitiesByParentAccountId(int parentAccountId, OpportunityDb db) =>
-            Results.Ok(await db.Opportunities.Where(o => o.ParentAccountId == parentAccountId).ToListAsync());
+        public static async Task<IResult> GetOpportunitiesByAccountName(string accountName, OpportunityDb db) =>
+            Results.Ok(await db.Opportunities.Where(o => o.Account == accountName).ToListAsync());
 
         public static async Task<IResult> GetAllOpportunities(OpportunityDb db) =>
             Results.Ok(await db.Opportunities.ToListAsync());

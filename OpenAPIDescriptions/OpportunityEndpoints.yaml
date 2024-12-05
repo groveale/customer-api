@@ -1,29 +1,91 @@
-openapi: 3.0.1
+openapi: '3.0.2'
 info:
-  title: Opportunity Management API
-  version: 1.0.0
+  title: Opportunities Management API
+  version: '1.0'
   description: API for managing opportunity records
+
 servers:
-  - url: https://ag-customer-api.azurewebsites.net/
+  - url: https://ag-customer-api.azurewebsites.net/ # Replace with your actual server URL
+
+components:
+  schemas:
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the opportunity
+        account:
+          type: string
+          description: Name of the account associated with the opportunity
+        territory:
+          type: string
+          description: Territory of the opportunity
+        probability:
+          type: number
+          format: float
+          description: Probability of closing the opportunity
+        stageName:
+          type: string
+          description: Current stage of the opportunity
+        amount:
+          type: number
+          format: float
+          description: Monetary value of the opportunity
+        currency:
+          type: string
+          description: Currency of the opportunity amount
+        owner:
+          type: string
+          description: Owner of the opportunity
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date and time when the opportunity was created
+        closeDate:
+          type: string
+          format: date-time
+          description: Expected or actual close date of the opportunity
+        serviceLine:
+          type: string
+          description: Service line associated with the opportunity
+        parentAccountId:
+          type: integer
+          description: Identifier of the parent account
+      required:
+        - account
+        - stageName
+        - amount
+        - parentAccountId
+
+  parameters:
+    OpportunityId:
+      name: id
+      in: path
+      description: Unique identifier of the opportunity
+      required: true
+      schema:
+        type: integer
+
 paths:
   /opportunities:
     get:
-      summary: Get All Opportunities
+      summary: Get all opportunities
       operationId: GetAllOpportunities
       tags:
         - Opportunity
       responses:
         '200':
-          description: Successfully retrieved opportunities
+          description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Opportunity'
-    
+
     post:
-      summary: Create a New Opportunity
+      summary: Create a new opportunity
       operationId: CreateOpportunity
       tags:
         - Opportunity
@@ -40,40 +102,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Opportunity'
-  
+
   /opportunities/{id}:
     get:
-      summary: Get Opportunity by ID
+      summary: Get a specific opportunity by ID
       operationId: GetOpportunityById
       tags:
         - Opportunity
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/OpportunityId'
       responses:
         '200':
-          description: Successfully retrieved opportunity
+          description: Successful response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Opportunity'
         '404':
           description: Opportunity not found
-    
+
     put:
-      summary: Update Opportunity
+      summary: Update an existing opportunity
       operationId: UpdateOpportunity
       tags:
         - Opportunity
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/OpportunityId'
       requestBody:
         required: true
         content:
@@ -85,18 +139,14 @@ paths:
           description: Opportunity updated successfully
         '404':
           description: Opportunity not found
-    
+
     delete:
-      summary: Delete Opportunity
+      summary: Delete an opportunity
       operationId: DeleteOpportunity
       tags:
         - Opportunity
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/OpportunityId'
       responses:
         '200':
           description: Opportunity deleted successfully
@@ -106,65 +156,26 @@ paths:
                 $ref: '#/components/schemas/Opportunity'
         '404':
           description: Opportunity not found
-  
-  /opportunities/customer/{parentAccountId}:
+
+  /opportunities/customer/{account}:
     get:
-      summary: Get Opportunities by Parent Account ID
-      operationId: GetOpportunitiesByParentAccountId
+      summary: Get opportunities by account name
+      operationId: GetOpportunitiesByAccountName
       tags:
         - Opportunity
       parameters:
-        - name: parentAccountId
+        - name: account
           in: path
+          description: Name of the account
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
-          description: Successfully retrieved opportunities for the parent account
+          description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Opportunity'
-
-components:
-  schemas:
-    Opportunity:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        account:
-          type: string
-        territory:
-          type: string
-        probability:
-          type: number
-          format: float
-        stageName:
-          type: string
-        amount:
-          type: number
-          format: float
-        currency:
-          type: string
-        owner:
-          type: string
-        dateCreated:
-          type: string
-          format: date-time
-        closeDate:
-          type: string
-          format: date-time
-        serviceLine:
-          type: string
-        parentAccountId:
-          type: integer
-      required:
-        - account
-        - stageName
-        - amount
-        - parentAccountId
