@@ -18,6 +18,7 @@ builder.Services.AddDbContext<OrderDb>(opt => opt.UseInMemoryDatabase("OrderList
 builder.Services.AddDbContext<TicketDb>(opt => opt.UseInMemoryDatabase("TicketList"));
 builder.Services.AddDbContext<OpportunityDb>(opt => opt.UseInMemoryDatabase("OpportunityList"));
 builder.Services.AddDbContext<CustomerDb>(opt => opt.UseInMemoryDatabase("CustomerList"));
+builder.Services.AddDbContext<OrderHeaderDb>(opt => opt.UseInMemoryDatabase("OrderHeaderList"));
 
 
 
@@ -52,6 +53,6 @@ app.UseSwaggerUi(config =>
 app.MapCustomerEndpoints();
 app.MapTicketEndpoints();
 app.MapOpportunityEndpoints();
-app.MapOrderEndpoints();
+app.MapOrderHeaderEndpoints();
 
 app.Run();

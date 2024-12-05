@@ -42,7 +42,7 @@ namespace groveale.Endpoints
             customer.Name = inputCustomer.Name;
             customer.Strategic = inputCustomer.Strategic;
             customer.AccountOwner = inputCustomer.AccountOwner;
-            customer.Region = inputCustomer.Region;
+            customer.SellerID = inputCustomer.SellerID;
 
             await db.SaveChangesAsync();
 

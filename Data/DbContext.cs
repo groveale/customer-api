@@ -16,7 +16,12 @@ namespace groveale.Data
         public DbSet<Order> Orders { get; set; }
     }
 
-    
+    public class OrderHeaderDb : DbContext
+    {
+        public OrderHeaderDb(DbContextOptions<OrderHeaderDb> options) : base(options) { }
+
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+    }
 
     public class OpportunityDb : DbContext
     {

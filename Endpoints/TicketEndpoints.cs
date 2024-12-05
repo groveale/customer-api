@@ -43,7 +43,6 @@ namespace groveale.Endpoints
 
             if (ticket is null) return Results.NotFound();
 
-            ticket.Title = inputTicket.Title;
             ticket.State = inputTicket.State;
             ticket.Priority = inputTicket.Priority;
             ticket.Long_Description = inputTicket.Long_Description;
@@ -52,7 +51,9 @@ namespace groveale.Endpoints
             ticket.Closed_at = inputTicket.Closed_at;
             ticket.CompanyID = inputTicket.CompanyID;
             ticket.DaysOpen = inputTicket.DaysOpen;
-            ticket.CallerID = inputTicket.CallerID;            
+            ticket.CallerID = inputTicket.CallerID; 
+            ticket.CompanyName = inputTicket.CompanyName;
+            ticket.Short_Description = inputTicket.Short_Description;           
 
             await db.SaveChangesAsync();
 

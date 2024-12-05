@@ -6,7 +6,7 @@ namespace groveale.Models
         public string? Name { get; set; }
         public bool Strategic { get; set; }
         public string? AccountOwner { get; set; }
-        public string? Region { get; set; }
+        public int? SellerID { get; set; }
         
     }
 }

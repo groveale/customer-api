@@ -5,31 +5,20 @@ namespace groveale.Models
 {
     public class Order
     {
+        
         public int Id { get; set; }
-        public string? Title { get; set; }
-         public string? AccountName { get; set; } 
-        public string? Territory { get; set; }
-        public OrderStatus Status { get; set; }
-        public decimal OrderValue { get; set; }
-        public string? Currency { get; set; }
-        public List<Product> Products { get; set; } = new List<Product>();
-        //public List<string>? Products { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime? DateClosed { get; set; }
-    }
-
-    public enum OrderStatus
-    {
-        Open,
-        Shipped,
-        Closed
-    }
-
-    public class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
+        public int ParentCustomerID { get; set; }
+        public string? ParentCustomer { get; set; }
+        public string? LocalCustomer { get; set; }
+        public string? LocalCustomerID { get; set; }
+        public string? SalesOrderID { get; set; }
+        public int UnitQuantity { get; set; }
+        public decimal ItemValue { get; set; }
+        public string? StorageLocation { get; set; }
+        public string? OrderItemName { get; set; }
+        public string? OrderItemDescription { get; set; }
+        public string? ShippingDestinationCountry { get; set; }
+        public string? ShippingDestinationCity { get; set; }
+        public string? ProfitCentre { get; set; }
     }
 }
