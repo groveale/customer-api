@@ -10,9 +10,11 @@ namespace groveale.Endpoints
         {
             var ticketItems = routes.MapGroup("/tickets").WithTags("Ticket");
 
-            ticketItems.MapGet("/", GetAllTickets);
+            // tickets by customer name
+            
+            //ticketItems.MapGet("/", GetAllTickets);
             ticketItems.MapGet("/{id}", GetTicketById);
-            ticketItems.MapGet("/customer/{customerId}", GetTicketsByCustomerId); // New endpoint
+            ticketItems.MapGet("/customer/{customerName}", GetTicketsByCustomerName);
             ticketItems.MapPost("/", CreateTicket);
             ticketItems.MapPut("/{id}", UpdateTicket);
             ticketItems.MapDelete("/{id}", DeleteTicket);
@@ -27,8 +29,11 @@ namespace groveale.Endpoints
                     ? Results.Ok(ticket)
                     : Results.NotFound();
 
-        public static async Task<IResult> GetTicketsByCustomerId(int customerId, TicketDb db) =>
-            Results.Ok(await db.Tickets.Where(t => t.CompanyID == customerId).ToListAsync());
+        public static async Task<IResult> GetTicketsByCustomerName(string customerName, TicketDb db){
+            return Results.Ok(await db.Tickets.Where(t => t.CompanyName == customerName).ToListAsync());
+        }
+            
+           
 
         public static async Task<IResult> CreateTicket(Ticket ticket, TicketDb db)
         {
@@ -53,7 +58,7 @@ namespace groveale.Endpoints
             ticket.DaysOpen = inputTicket.DaysOpen;
             ticket.CallerID = inputTicket.CallerID; 
             ticket.CompanyName = inputTicket.CompanyName;
-            ticket.Short_Description = inputTicket.Short_Description;           
+            ticket.Short_Description = inputTicket.Short_Description;
 
             await db.SaveChangesAsync();
 

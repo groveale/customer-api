@@ -15,11 +15,32 @@ namespace groveale.Endpoints
             opportunityItems.MapPost("/", CreateOpportunity);
             opportunityItems.MapPut("/{id}", UpdateOpportunity);
             opportunityItems.MapDelete("/{id}", DeleteOpportunity);
-            opportunityItems.MapGet("/customer/{account}", GetOpportunitiesByAccountName); // New endpoint
+            opportunityItems.MapGet("/account/{account}", GetOpportunitiesByAccountName); // New endpoint
+            opportunityItems.MapGet("/parentAccount/{parentAccount}", GetOpportunitiesByParentAccountName); // New endpoint
+
+            opportunityItems.MapGet("/{id}/orders", GetOrdersInOpportunityById);
+        }
+
+        public static async Task<IResult> GetOrdersInOpportunityById(int id, OpportunityDb db, OrderHeaderDb orderHeaderDb)
+        {
+            // get opp first
+            var opportunity = await db.Opportunities.FindAsync(id);
+
+            if (opportunity is null) return Results.NotFound();
+    
+            // get orders for opp
+            var orders = await orderHeaderDb.OrderHeaders.Where(o => o.OpportunityID == id).ToListAsync();
+
+            if (orders is null) return Results.NotFound();
+
+            return Results.Ok(orders);
         }
 
         public static async Task<IResult> GetOpportunitiesByAccountName(string accountName, OpportunityDb db) =>
             Results.Ok(await db.Opportunities.Where(o => o.Account == accountName).ToListAsync());
+
+        public static async Task<IResult> GetOpportunitiesByParentAccountName(string parentAccountName, OpportunityDb db) =>
+            Results.Ok(await db.Opportunities.Where(o => o.ParentAccount == parentAccountName).ToListAsync());
 
         public static async Task<IResult> GetAllOpportunities(OpportunityDb db) =>
             Results.Ok(await db.Opportunities.ToListAsync());
