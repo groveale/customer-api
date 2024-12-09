@@ -1,8 +1,8 @@
 openapi: '3.0.2'
 info:
-  title: Opportunities Management API
+  title: Opportunity Management API
   version: '1.0'
-  description: API for managing opportunity records
+  description: API for managing opportunities and related orders
 
 servers:
   - url: https://ag-customer-api.azurewebsites.net/ # Replace with your actual server URL
@@ -17,10 +17,10 @@ components:
           description: Unique identifier for the opportunity
         account:
           type: string
-          description: Name of the account associated with the opportunity
+          description: Account name associated with the opportunity
         territory:
           type: string
-          description: Territory of the opportunity
+          description: Sales territory of the opportunity
         probability:
           type: number
           format: float
@@ -30,7 +30,7 @@ components:
           description: Current stage of the opportunity
         amount:
           type: number
-          format: float
+          format: double
           description: Monetary value of the opportunity
         currency:
           type: string
@@ -41,7 +41,7 @@ components:
         dateCreated:
           type: string
           format: date-time
-          description: Date and time when the opportunity was created
+          description: Date and time the opportunity was created
         closeDate:
           type: string
           format: date-time
@@ -52,20 +52,60 @@ components:
         parentAccountId:
           type: integer
           description: Identifier of the parent account
+        parentAccount:
+          type: string
+          description: Name of the parent account
       required:
+        - id
         - account
         - stageName
         - amount
-        - parentAccountId
 
-  parameters:
-    OpportunityId:
-      name: id
-      in: path
-      description: Unique identifier of the opportunity
-      required: true
-      schema:
-        type: integer
+    OrderHeader:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Unique identifier for the order
+    opportunityID:
+      type: integer
+      description: Associated opportunity identifier
+    salesDocNumber:
+      type: string
+      description: Sales document number
+    salesDocType:
+      type: string
+      description: Type of sales document
+    salesOrganisation:
+      type: string
+      description: Sales organisation
+    distributionChannel:
+      type: string
+      description: Distribution channel
+    parentCustomerID:
+      type: integer
+      description: Identifier for the parent customer
+    parentCustomer:
+      type: string
+      description: Name of the parent customer
+    localCustomerID:
+      type: string
+      description: Identifier for the local customer
+    localCustomer:
+      type: string
+      description: Name of the local customer
+    dateCreated:
+      type: string
+      format: date-time
+      description: Date the order was created
+    createdBy:
+      type: string
+      description: Name of the person who created the order
+  required:
+    - id
+    - opportunityID
+    - parentCustomerID
+    - dateCreated
 
 paths:
   /opportunities:
@@ -76,7 +116,7 @@ paths:
         - Opportunity
       responses:
         '200':
-          description: Successful response
+          description: Successful response with list of opportunities
           content:
             application/json:
               schema:
@@ -102,18 +142,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Opportunity'
+        '400':
+          description: Invalid input
 
   /opportunities/{id}:
     get:
-      summary: Get a specific opportunity by ID
+      summary: Get opportunity by ID
       operationId: GetOpportunityById
       tags:
         - Opportunity
       parameters:
-        - $ref: '#/components/parameters/OpportunityId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
-          description: Successful response
+          description: Successful response with opportunity details
           content:
             application/json:
               schema:
@@ -127,7 +173,11 @@ paths:
       tags:
         - Opportunity
       parameters:
-        - $ref: '#/components/parameters/OpportunityId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -137,6 +187,8 @@ paths:
       responses:
         '204':
           description: Opportunity updated successfully
+        '400':
+          description: Invalid input
         '404':
           description: Opportunity not found
 
@@ -146,7 +198,11 @@ paths:
       tags:
         - Opportunity
       parameters:
-        - $ref: '#/components/parameters/OpportunityId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Opportunity deleted successfully
@@ -157,7 +213,7 @@ paths:
         '404':
           description: Opportunity not found
 
-  /opportunities/customer/{account}:
+  /opportunities/account/{account}:
     get:
       summary: Get opportunities by account name
       operationId: GetOpportunitiesByAccountName
@@ -166,16 +222,62 @@ paths:
       parameters:
         - name: account
           in: path
-          description: Name of the account
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Successful response
+          description: Successful response with opportunities for the account
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Opportunity'
+
+  /opportunities/parentAccount/{parentAccount}:
+    get:
+      summary: Get opportunities by parent account name
+      operationId: GetOpportunitiesByParentAccountName
+      tags:
+        - Opportunity
+      parameters:
+        - name: parentAccount
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with opportunities for the parent account
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+
+  /opportunities/{id}/orders:
+    get:
+      summary: Get orders associated with an opportunity
+      operationId: GetOrdersInOpportunityById
+      tags:
+        - Opportunity
+        - OrderHeader
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with orders for the opportunity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHeader'
+        '404':
+          description: Opportunity not found or no orders exist

@@ -1,0 +1,498 @@
+openapi: '3.0.2'
+info:
+  title: Business Management API
+  version: '1.0'
+  description: Comprehensive API for managing customers, opportunities, and orders
+
+servers:
+  - url: https://your-api-domain.com/  # Replace with your actual server URL
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the customer
+        name:
+          type: string
+          description: Name of the customer
+        strategic:
+          type: boolean
+          description: Indicates if the customer is a strategic account
+        accountOwner:
+          type: string
+          description: Name of the account owner
+        sellerID:
+          type: string
+          description: Identifier for the seller associated with the customer
+      required:
+        - name
+
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the opportunity
+        account:
+          type: string
+          description: Name of the account associated with the opportunity
+        territory:
+          type: string
+          description: Sales territory
+        probability:
+          type: number
+          format: float
+          description: Probability of closing the opportunity
+        stageName:
+          type: string
+          description: Current stage of the opportunity
+        amount:
+          type: number
+          format: double
+          description: Opportunity amount
+        currency:
+          type: string
+          description: Currency of the opportunity amount
+        owner:
+          type: string
+          description: Owner of the opportunity
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date when the opportunity was created
+        closeDate:
+          type: string
+          format: date-time
+          description: Expected close date of the opportunity
+        serviceLine:
+          type: string
+          description: Service line associated with the opportunity
+        parentAccountId:
+          type: integer
+          description: Parent account identifier
+        parentAccount:
+          type: string
+          description: Name of the parent account
+      required:
+        - account
+        - stageName
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the order
+        parentCustomerID:
+          type: integer
+          description: Parent customer identifier
+        parentCustomer:
+          type: string
+          description: Name of the parent customer
+        localCustomer:
+          type: string
+          description: Name of the local customer
+        localCustomerID:
+          type: string
+          description: Identifier for the local customer
+        salesOrderID:
+          type: string
+          description: Sales order identifier
+        opportunityID:
+          type: integer
+          description: Associated opportunity identifier
+        unitQuantity:
+          type: integer
+          description: Quantity of units in the order
+        itemValue:
+          type: number
+          format: decimal
+          description: Value of the order items
+        storageLocation:
+          type: string
+          description: Storage location for the order
+        orderItemName:
+          type: string
+          description: Name of the order item
+        orderItemDescription:
+          type: string
+          description: Description of the order item
+        shippingDestinationCountry:
+          type: string
+          description: Country of shipping destination
+        shippingDestinationCity:
+          type: string
+          description: City of shipping destination
+        profitCentre:
+          type: string
+          description: Profit center associated with the order
+
+  parameters:
+    CustomerId:
+      name: id
+      in: path
+      description: Unique identifier of the customer
+      required: true
+      schema:
+        type: integer
+
+    OpportunityId:
+      name: id
+      in: path
+      description: Unique identifier of the opportunity
+      required: true
+      schema:
+        type: integer
+
+paths:
+  # Customer Endpoints
+  /customer:
+    get:
+      summary: Get all customers
+      operationId: GetAllCustomers
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Create a new customer
+      operationId: CreateCustomer
+      tags:
+        - Customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+  /customer/{id}:
+    get:
+      summary: Get a specific customer by ID
+      operationId: GetCustomerById
+      tags:
+        - Customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    put:
+      summary: Update an existing customer
+      operationId: UpdateCustomer
+      tags:
+        - Customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '204':
+          description: Customer updated successfully
+        '404':
+          description: Customer not found
+    delete:
+      summary: Delete a customer
+      operationId: DeleteCustomer
+      tags:
+        - Customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+
+  # Opportunity Endpoints
+  /opportunities:
+    get:
+      summary: Get all opportunities
+      operationId: GetAllOpportunities
+      tags:
+        - Opportunity
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+    post:
+      summary: Create a new opportunity
+      operationId: CreateOpportunity
+      tags:
+        - Opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Opportunity'
+      responses:
+        '201':
+          description: Opportunity created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+
+  /opportunities/{id}:
+    get:
+      summary: Get a specific opportunity by ID
+      operationId: GetOpportunityById
+      tags:
+        - Opportunity
+      parameters:
+        - $ref: '#/components/parameters/OpportunityId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+        '404':
+          description: Opportunity not found
+    put:
+      summary: Update an existing opportunity
+      operationId: UpdateOpportunity
+      tags:
+        - Opportunity
+      parameters:
+        - $ref: '#/components/parameters/OpportunityId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Opportunity'
+      responses:
+        '204':
+          description: Opportunity updated successfully
+        '404':
+          description: Opportunity not found
+    delete:
+      summary: Delete an opportunity
+      operationId: DeleteOpportunity
+      tags:
+        - Opportunity
+      parameters:
+        - $ref: '#/components/parameters/OpportunityId'
+      responses:
+        '200':
+          description: Opportunity deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+        '404':
+          description: Opportunity not found
+
+  # Additional Opportunity Endpoints
+  /opportunities/account/{account}:
+    get:
+      summary: Get opportunities by account name
+      operationId: GetOpportunitiesByAccountName
+      tags:
+        - Opportunity
+      parameters:
+        - name: account
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+
+  /opportunities/parentAccount/{parentAccount}:
+    get:
+      summary: Get opportunities by parent account name
+      operationId: GetOpportunitiesByParentAccountName
+      tags:
+        - Opportunity
+      parameters:
+        - name: parentAccount
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+
+  /opportunities/{id}/orders:
+    get:
+      summary: Get orders associated with a specific opportunity
+      operationId: GetOrdersInOpportunityById
+      tags:
+        - Opportunity
+        - Order
+      parameters:
+        - $ref: '#/components/parameters/OpportunityId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '404':
+          description: Opportunity not found or no orders exist
+
+  # Order Endpoints
+  /orderheaders:
+    get:
+      summary: Get all order headers
+      operationId: GetAllOrders
+      tags:
+        - Order
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /orderheaders/parentCustomer/{parentCustomer}:
+    get:
+      summary: Get orders by parent customer name
+      operationId: GetAllOrdersByCustomerName
+      tags:
+        - Order
+      parameters:
+        - name: parentCustomer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /orderheaders/localCustomer/{localCustomer}:
+    get:
+      summary: Get orders by local customer name
+      operationId: GetAllOrdersByLocalCustomerName
+      tags:
+        - Order
+      parameters:
+        - name: localCustomer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /orderheaders/{id}/orderitems:
+    get:
+      summary: Get order items by order header ID
+      operationId: GetItemsInOrderById
+      tags:
+        - Order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+
+  /orderheaders/{salesDocNumber}/orderitems:
+    get:
+      summary: Get order items by sales document number
+      operationId: GetItemsInOrderBySalesDocNumber
+      tags:
+        - Order
+      parameters:
+        - name: salesDocNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found

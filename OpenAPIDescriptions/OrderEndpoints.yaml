@@ -1,0 +1,135 @@
+openapi: '3.0.2'
+info:
+  title: Order Management API
+  version: '1.0'
+  description: API for managing order headers and order items
+
+servers:
+  - url: https://ag-customer-api.azurewebsites.net/  # Replace with your actual server URL
+
+components:
+  schemas:
+    OrderHeader:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the order header
+        salesDocNumber:
+          type: string
+          description: Sales document number
+        parentCustomer:
+          type: string
+          description: Parent customer name
+        localCustomer:
+          type: string
+          description: Local customer name
+      required:
+        - salesDocNumber
+        - parentCustomer
+        - localCustomer
+
+    OrderItem:
+      type: object
+      properties:
+        salesOrderID:
+          type: string
+          description: Sales order identifier
+        # Add other relevant order item properties here
+      required:
+        - salesOrderID
+
+paths:
+  /orderheaders/parentCustomer/{parentCustomer}:
+    get:
+      summary: Get all order headers by parent customer name
+      operationId: GetAllOrdersByCustomerName
+      tags:
+        - OrderHeader
+      parameters:
+        - name: parentCustomer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHeader'
+
+  /orderheaders/localCustomer/{localCustomer}:
+    get:
+      summary: Get all order headers by local customer name
+      operationId: GetAllOrdersByLocalCustomerName
+      tags:
+        - OrderHeader
+      parameters:
+        - name: localCustomer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHeader'
+
+  /orderheaders/{id}/orderitems:
+    get:
+      summary: Get order items by order header ID
+      operationId: GetItemsInOrderById
+      tags:
+        - OrderHeader
+        - OrderItem
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+        '404':
+          description: Order not found
+
+  /orderheaders/{salesDocNumber}/orderitems:
+    get:
+      summary: Get order items by sales document number
+      operationId: GetItemsInOrderBySalesDocNumber
+      tags:
+        - OrderHeader
+        - OrderItem
+      parameters:
+        - name: salesDocNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+        '404':
+          description: Order not found

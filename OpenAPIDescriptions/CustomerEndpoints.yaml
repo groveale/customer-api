@@ -24,9 +24,9 @@ components:
         accountOwner:
           type: string
           description: Name of the account owner
-        region:
+        sellerID:
           type: string
-          description: Geographic region of the customer
+          description: Identifier for the seller associated with the customer
       required:
         - name
 
