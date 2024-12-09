@@ -38,7 +38,7 @@ namespace groveale.Data
         }
 
         private static void SeedTickets(TicketDb context)
-        {   
+        {
             string csvData = @"I can't access my account and need a password reset ASAP! This is affecting my work.	High	allen.trevino@Bosch.com	New	Fatoumata.Diallo@CCSpark.io	28/04/2024	30/04/2024	Bosch	2	2
                     VPN is down, and I can't work remotely. Fix this now! This is unacceptable.	Critical	brenda.sanchez@BMWGroup.com	InProgress	Mei.Ling@CCSpark.io	09/08/2024	21/08/2024	BMW Group	3	12
                     The office printer is not working again. Please fix it as soon as possible.	Medium	patricia.lopez@BMWGroup.com	Resolved	Hunter.Stephens@CCSpark.io	01/01/2024	02/01/2024	BMW Group	3	1
@@ -138,8 +138,7 @@ namespace groveale.Data
                     The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	sharon.cain@BMWGroup.com	Resolved	Justin.Baker@CCSpark.io	10/01/2024	11/03/2024	BMW Group	3	61
                     We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	jeffrey.torres@AOKPlus.com	Resolved	Kevin.Perez@CCSpark.io	14/04/2024	18/04/2024	AOK Plus	6	4
                     The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	ian.singh@Bosch.com	Resolved	Fatoumata.Diallo@CCSpark.io	17/05/2024	23/05/2024	Bosch	2	6
-                    We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	Santander	1	8
-                    ";
+                    We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	Santander	1	8";
 
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Ticket> tickets = new List<Ticket>();
@@ -147,22 +146,37 @@ namespace groveale.Data
             foreach (var line in lines)
             {
                 string[] values = line.Split('\t');
-                Ticket ticket = new Ticket
+
+                if (values.Length < 10)
                 {
-                    Short_Description = string.Empty,
-                    Long_Description = values[0],
-                    Priority = values[1],
-                    CallerID = values[2],
-                    State = values[3],
-                    AssignedTo = values[4],
-                    Opened_at = DateTime.ParseExact(values[5], "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                    Closed_at = DateTime.ParseExact(values[6], "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                    CompanyName = values[7],
-                    CompanyID = int.Parse(values[8]),
-                    Id = int.Parse(values[9]),
-                    DaysOpen = (DateTime.ParseExact(values[6], "dd/MM/yyyy", CultureInfo.InvariantCulture) - DateTime.ParseExact(values[5], "dd/MM/yyyy", CultureInfo.InvariantCulture)).Days
-                };
-                tickets.Add(ticket);
+                    // Handle the error or log it
+                    Console.WriteLine("Error: Line does not contain enough values.");
+                    continue;
+                }
+
+                try
+                {
+                    Ticket ticket = new Ticket
+                    {
+                        Short_Description = string.Empty,
+                        Long_Description = values[0],
+                        Priority = values[1],
+                        CallerID = values[2],
+                        State = values[3],
+                        AssignedTo = values[4],
+                        Opened_at = DateTime.ParseExact(values[5], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Closed_at = DateTime.ParseExact(values[6], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        CompanyName = values[7],
+                        CompanyID = int.Parse(values[8]),
+                        DaysOpen = int.Parse(values[9]),
+                    };
+                    tickets.Add(ticket);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the error or log it
+                    Console.WriteLine($"Error processing line: {ex.Message}");
+                }
             }
 
             if (!context.Tickets.Any())
@@ -214,31 +228,29 @@ namespace groveale.Data
                 1	Santander	Santander IE	LC06	SDN0031	1701	16200	Roissy CDG	XR Headset	Customer is looking to purchase XR Headset to innovate training programs.	UK	Birmingham	Tech Sourcing
                 5	Audi AG	Audi AG UK	LC30	SDN0032	366	1325	Doha	Consulting Package	Customer is looking to purchase Consulting Package for strategic planning.	DE	Frankfurt	Consulting
                 6	AOK Plus	AOK Plus US	LC31	SDN0033	4556	1542	Moordrecht	Managed Services	Customer is looking to purchase Managed Services to improve IT operations.	JP	Kyoto	Managed Service
-                1	Santander	Santander BR	LC20	SDN0034	908	16817	Roissy CDG	XR Headset	Customer is looking to purchase XR Headset to innovate training programs.	JP	Tokyo	Tech Sourcing
-                ";
-    
+                1	Santander	Santander BR	LC20	SDN0034	908	16817	Roissy CDG	XR Headset	Customer is looking to purchase XR Headset to innovate training programs.	JP	Tokyo	Tech Sourcing";
+
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Order> orders = new List<Order>();
 
             foreach (var line in lines)
             {
-                var values = line.Split(',');
+                var values = line.Split('\t');
                 orders.Add(new Order
                 {
-                    Id = int.Parse(values[0]),
-                    ParentCustomerID = int.Parse(values[1]),
-                    ParentCustomer = values[2],
-                    LocalCustomer = values[3],
-                    LocalCustomerID = values[4],
-                    SalesOrderID = values[5],
-                    UnitQuantity = int.Parse(values[6]),
-                    ItemValue = decimal.Parse(values[7]),
-                    StorageLocation = values[8],
-                    OrderItemName = values[9],
-                    OrderItemDescription = values[10],
-                    ShippingDestinationCountry = values[11],
-                    ShippingDestinationCity = values[12],
-                    ProfitCentre = values[13]
+                    ParentCustomerID = int.Parse(values[0]),
+                    ParentCustomer = values[1],
+                    LocalCustomer = values[2],
+                    LocalCustomerID = values[3],
+                    SalesOrderID = values[4],
+                    UnitQuantity = int.Parse(values[5]),
+                    ItemValue = decimal.Parse(values[6]),
+                    StorageLocation = values[7],
+                    OrderItemName = values[8],
+                    OrderItemDescription = values[9],
+                    ShippingDestinationCountry = values[10],
+                    ShippingDestinationCity = values[11],
+                    ProfitCentre = values[12]
                 });
             }
 
@@ -390,22 +402,21 @@ namespace groveale.Data
                     IT Infrastructure Audit	Comprehensive audit of IT infrastructure to identify areas for improvement and ensure compliance.	100049	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	8186015	£	Adebayo.Adeyemi@CCSpark.io	08/01/2024	31/01/2024
                     IT Training Services	Training services to enhance the skills and knowledge of IT staff.	100050	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	7835765	£	Samantha.Allen@CCSpark.io	23/01/2024	15/02/2024
                     IT Support Services	Ongoing support services to ensure the smooth operation of IT systems and resolve issues promptly.	100051	Santander	1	Santander IE	IE	EU	Consulting	1	Quote	6759459	£	Liu.Wei@CCSpark.io	08/01/2024	31/01/2024
-                    IT Staffing Services	Staffing services to provide skilled IT professionals for short-term or long-term projects.	100052	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.7	Prospecting	7129885	£	Jessica.Thomas@CCSpark.io	23/01/2024	15/02/2024
-                    ";
+                    IT Staffing Services	Staffing services to provide skilled IT professionals for short-term or long-term projects.	100052	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.7	Prospecting	7129885	£	Jessica.Thomas@CCSpark.io	23/01/2024	15/02/2024";
 
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Opportunity> opportunities = new List<Opportunity>();
 
             foreach (var line in lines)
             {
-                var values = line.Split(',');
+                string[] values = line.Split('\t');
                 opportunities.Add(new Opportunity
                 {
                     Name = values[0],
                     Description = values[1],
-                    ParentAccountId = int.Parse(values[2]),
+                    ParentAccountId = int.Parse(values[4]),
                     ParentAccount = values[3],
-                    Id = int.Parse(values[4]),
+                    OpportunityID = values[2],
                     Account = values[5],
                     Territory = values[6],
                     Region = values[7],

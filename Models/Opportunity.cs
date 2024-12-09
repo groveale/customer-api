@@ -8,6 +8,7 @@ namespace groveale.Models
         public string? Description { get; set; }
         public int ParentAccountId { get; set; } // New property
         public string? ParentAccount { get; set; } // New property
+        public string OpportunityID { get; set; }
         public string? Account { get; set; }
         public string? Territory { get; set; }
         public string? Region { get; set; }

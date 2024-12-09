@@ -53,6 +53,6 @@ app.UseSwaggerUi(config =>
 app.MapCustomerEndpoints();
 app.MapTicketEndpoints();
 app.MapOpportunityEndpoints();
-app.MapOrderHeaderEndpoints();
+app.MapOrderEndpoints();
 
 app.Run();
