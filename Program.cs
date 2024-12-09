@@ -4,6 +4,13 @@ using groveale.Data;
 using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventSourceLogger();
+
 // builder.Services.AddDbContext<TicketDb>(opt =>
 //     opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
 // builder.Services.AddDbContext<OrderDb>(opt => 
@@ -31,8 +38,8 @@ builder.Services.AddOpenApiDocument(config =>
 });
 
 //Use Azure Managed Identity for authentication
-var credential = new DefaultAzureCredential();
-builder.Services.AddSingleton(credential);
+// var credential = new DefaultAzureCredential();
+// builder.Services.AddSingleton(credential);
 
 var app = builder.Build();
 
@@ -54,5 +61,6 @@ app.MapCustomerEndpoints();
 app.MapTicketEndpoints();
 app.MapOpportunityEndpoints();
 app.MapOrderEndpoints();
+app.MapOrderHeaderEndpoints();
 
 app.Run();

@@ -25,7 +25,7 @@ namespace groveale.Data
 
                 var opportunityDbContext = services.GetRequiredService<OpportunityDb>();
                 opportunityDbContext.Database.EnsureCreated();
-                SeedOpportunities(opportunityDbContext);
+                SeedOpportunities2(opportunityDbContext);
 
                 var customerDbContext = services.GetRequiredService<CustomerDb>();
                 customerDbContext.Database.EnsureCreated();
@@ -159,7 +159,7 @@ namespace groveale.Data
                     Ticket ticket = new Ticket
                     {
                         Short_Description = string.Empty,
-                        Long_Description = values[0],
+                        Long_Description = values[0].Trim(),
                         Priority = values[1],
                         CallerID = values[2],
                         State = values[3],
@@ -236,6 +236,14 @@ namespace groveale.Data
             foreach (var line in lines)
             {
                 var values = line.Split('\t');
+
+                if (values.Length < 13)
+                {
+                    // Handle the error or log it
+                    Console.WriteLine("Error: Line does not contain enough values.");
+                    continue;
+                }
+
                 orders.Add(new Order
                 {
                     ParentCustomerID = int.Parse(values[0]),
@@ -321,6 +329,14 @@ namespace groveale.Data
             foreach (var line in lines)
             {
                 string[] values = line.Split('\t');
+
+                if (values.Length < 11)
+                {
+                    // Handle the error or log it
+                    Console.WriteLine("Error: Line does not contain enough values.");
+                    continue;
+                }
+
                 OrderHeader orderHeader = new OrderHeader
                 {
                     OpportunityID = int.Parse(values[0]),
@@ -348,91 +364,216 @@ namespace groveale.Data
         }
 
 
-        private static void SeedOpportunities(OpportunityDb context)
+        private static void SeedOpportunities2(OpportunityDb context)
         {
-            string csvData = @"Santander - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100000	Santander	1	Santander UK	UK	EU	Tech Sourcing	75%	Quote	3750000	£	Adebayo.Adeyemi@CCSpark.io	02/12/2024	31/12/2024
-                    Bosch - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100001	Bosch	2	Bosch UK	UK	EU	Tech Sourcing	50%	Quote	750000	£	Jacob.Harris@CCSpark.io	09/12/2024	31/12/2024
-                    Wingtip Toys  - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100002	BMW Group	3	BMW Group UK	UK	EU	Tech Sourcing	100%	Quote	1500000	£	Adebayo.Adeyemi@CCSpark.io	04/11/2024	31/12/2024
-                    Zero-Touch Provisioning for Corporate Devices:	Implement automated enrollment options for corporate devices to streamline the provisioning process and reduce manual intervention	100003	Santander	1	Santander DE	DE	EU	Managed Service	25%	Qualification	234000	£	Jacob.Harris@CCSpark.io	09/12/2023	01/01/2024
-                    BYOD Enrollment and Management:	Provide a self-service Company Portal for users to enroll their BYOD devices, ensuring secure access to corporate resources	100004	Santander	1	Santander Group	DE	EU	Tech Sourcing	45%	Qualification	234110	£	Jacob.Harris@CCSpark.io	24/12/2023	16/01/2024
-                    Custom Terms and Conditions at Enrollment	Deliver custom terms and conditions during device enrollment to ensure compliance with company policies	100005	Santander	1	Santander DE	DE	EU	Consulting	50%	Prospecting	34000	£	Amanda.King@CCSpark.io	08/01/2024	31/01/2024
-                    Remote Assistance for Device Support	Offer remote assistance to troubleshoot and resolve device issues, enhancing user satisfaction and reducing downtime	100006	Santander	1	Santander IE	IE	EU	Consulting	100%	Closed Won	432502	£	Adebayo.Adeyemi@CCSpark.io	23/01/2024	15/02/2024
-                    Selective Wipe for Lost or Stolen Devices	Perform selective wipes on lost or stolen devices to protect corporate data while preserving personal information	100007	Santander	1	Santander FR	US 	US	Managed Service	100%	Closed Won	1002303	£	Adebayo.Adeyemi@CCSpark.io	07/02/2024	01/03/2024
-                    Deploy Device Security Policies	Implement and enforce device security policies to protect corporate data and ensure compliance with security standards	100008	Bosch	2	Bosch IE	US	US	Managed Service	70%	Qualification	3458245	£	Liu.Wei@CCSpark.io	22/02/2024	16/03/2024
-                    Install Mandatory Apps	Deploy mandatory applications to devices to ensure users have the necessary tools for their roles	100009	Bosch	2	Bosch FR	FR	EU	Tech Sourcing	50%	Qualification	4739792	£	Emily.Johnson@CCSpark.io	08/03/2024	31/03/2024
-                    Restrict Access to Corporate Resources: 	Restrict access to corporate resources if device policies are violated, such as using a jailbroken device	100010	Bosch	2	Bosch UK	UK	EU	Tech Sourcing	50%	Quote	3175331	£	Emily.Johnson@CCSpark.io	22/03/2024	14/04/2024
-                    Protect Corporate Data	Protect corporate data by restricting actions such as copy/cut/paste/save outside of the managed app ecosystem	100011	BMW Group	3	BMW Group US	US	US	Managed Service	45%	Quote	4019959	£	Thomas.Turner@CCSpark.io	06/04/2024	29/04/2024
-                    Report on Device and App Compliance	Generate reports on device and app compliance to monitor adherence to security policies	100012	BMW Group	3	BMW Group DE	DE	EU	Consulting	70%	Closed Lost	424884	£	Liu.Wei@CCSpark.io	21/04/2024	14/05/2024
-                    Employee Device Refresh Program	: Implement a device refresh program to ensure employees have up-to-date and efficient devices for their work	100013	Audi AG	5	Audi AG DE	DE	EU	Consulting	30	Quote	1702300	£	Thomas.Turner@CCSpark.io	04/08/2024	27/08/2024
-                    New Hire Device Provisioning:	Provide new hires with the necessary devices and equipment to ensure a smooth onboarding process	100014	Audi AG	5	Audi AG IE	IE	EU	Tech Sourcing	30	Quote	5382643	£	Emily.Johnson@CCSpark.io	18/08/2024	10/09/2024
-                    Primary Device Replacements	Manage primary device replacements for employees, ensuring minimal disruption to their work	100015	AOK Plus	6	AOK Plus FR	FR	EU	Managed Service	90	Quote	616384	£	Thomas.Turner@CCSpark.io	02/09/2024	25/09/2024
-                    Surface Device Management	 Offer comprehensive management of Surface devices, including deployment, security, and support	100016	AOK Plus	6	AOK Plus IE	IE	EU	Managed Service	60	Quote	8530913	£	Jacob.Harris@CCSpark.io	17/09/2024	10/10/2024
-                    Enhanced Lifecycle Management for D365	Assist customers with application enhancements, platform updates, and ALM best practices using Azure DevOps	100017	Santander	1	Santander DE	DE	EU	Managed Service	20	Closed Lost	2909680	£	Jacob.Harris@CCSpark.io	02/10/2024	25/10/2024
-                    Supplier Lifecycle Management	: Implement a supplier lifecycle management process to ensure compliance and manage supplier relationships effectively	100018	BMW Group	3	BMW Group DE	DE	EU	Consulting	50%	Quote	6622684	£	Adebayo.Adeyemi@CCSpark.io	17/10/2024	09/11/2024
-                    Device Inventory Management	Track and manage device inventory to ensure optimal utilization and reduce costs	100019	BMW Group	3	BMW Group IE	IE	EU	Tech Sourcing	100%	Quote	2737663	£	Jessica.Thomas@CCSpark.io	01/11/2024	24/11/2024
-                    Device Decommissioning and Disposal	 Manage the decommissioning and disposal of devices to ensure data security and environmental compliance	100020	Bosch	2	Bosch FR	FR	EU	Consulting	100%	Closed Won	3581566	£	Jessica.Thomas@CCSpark.io	16/11/2024	09/12/2024
-                    Device Maintenance and Support	Provide ongoing maintenance and support for devices to ensure they remain in optimal working condition	100021	Bosch	2	Bosch UK	UK	EU	Managed Service	100%	Closed Won	2263141	£	Adebayo.Adeyemi@CCSpark.io	01/12/2024	24/12/2024
-                    Device Compliance and Security Audits	Conduct regular compliance and security audits to identify and address potential vulnerabilities	100022	Telefonica	7	Telefonica UK	UK	EU	Consulting	50%	Quote	5464675	£	Emily.Johnson@CCSpark.io	16/12/2024	08/01/2025
-                    IT Infrastructure Consulting	Comprehensive consulting to design, implement, and manage IT infrastructure, ensuring optimal performance and scalability.	100023	Santander	1	Santander BR	BR	LATAM	Consulting	0.25	Quote	1185701	£	Emily.Johnson@CCSpark.io	31/12/2024	23/01/2025
-                    Cybersecurity Assessment	In-depth assessment of cybersecurity measures to identify vulnerabilities and recommend improvements.	100024	Santander	1	Santander BR	BR	LATAM	Consulting	0.45	Quote	8908635	£	Jacob.Harris@CCSpark.io	22/02/2024	16/03/2024
-                    Cloud Migration Services	Assistance with migrating data and applications to the cloud, ensuring minimal disruption and maximum efficiency.	100025	Santander	1	Santander DE	DE	EU	Consulting	0.5	Quote	937899	£	Jacob.Harris@CCSpark.io	08/03/2024	31/03/2024
-                    Data Center Optimization	Optimization of data center operations to enhance performance, reduce costs, and improve energy efficiency.	100026	Santander	1	Santander DE	DE	EU	Consulting	1	Quote	4206898	£	Megan.Hernandez@CCSpark.io	22/03/2024	14/04/2024
-                    Network Design Consulting	Expert consulting on designing robust and scalable network architectures tailored to business needs.	100027	Bosch	2	Bosch IE	IE	EU	Consulting	1	Quote	2096035	£	Adebayo.Adeyemi@CCSpark.io	06/04/2024	29/04/2024
-                    IT Strategy Consulting	Strategic consulting to align IT initiatives with business goals, ensuring long-term success and innovation.	100028	Bosch	2	Bosch FR	FR	EU	Consulting	0.7	Quote	2338025	£	Amanda.King@CCSpark.io	13/04/2024	06/05/2024
-                    Application Modernization	Modernization of legacy applications to improve functionality, performance, and user experience.	100029	Bosch	2	Bosch IE	IE	EU	Consulting	0.5	Quote	2791488	£	Liu.Wei@CCSpark.io	04/08/2024	27/08/2024
-                    Digital Transformation	Comprehensive services to drive digital transformation, enhancing business processes and customer engagement.	100030	BMW Group	3	BMW Group SA	SA	AFRICA	Consulting	0.5	Quote	2170016	£	Amanda.King@CCSpark.io	11/08/2024	03/09/2024
-                    Managed IT Services	Ongoing management and support of IT infrastructure and services, ensuring reliability and efficiency.	100031	BMW Group	3	BMW Group SA	SA	AFRICA	Consulting	0.45	Quote	1059580	£	Amanda.King@CCSpark.io	02/09/2024	25/09/2024
-                    Business Continuity Planning	Development of business continuity plans to ensure operations can continue during and after a disaster.	100032	Audi AG	5	Audi AG IE	IE	EU	Consulting	0.7	Quote	2120210	£	Liu.Wei@CCSpark.io	07/09/2024	30/09/2024
-                    IT Governance Consulting	Consulting on establishing IT governance frameworks to ensure compliance and effective management of IT resources.	100033	Audi AG	5	Audi AG FR	FR	EU	Consulting	30	Quote	8340861	£	Liu.Wei@CCSpark.io	04/11/2024	27/11/2024
-                    Enterprise Architecture	Design and implementation of enterprise architecture to support business strategy and operations.	100034	AOK Plus	6	AOK Plus UK	UK	EU	Consulting	30	Quote	8358724	£	Thomas.Turner@CCSpark.io	09/12/2023	01/01/2024
-                    IT Service Management	Implementation of IT service management practices to improve service delivery and customer satisfaction.	100035	AOK Plus	6	AOK Plus UK	UK	EU	Consulting	90	Prospecting	3492480	£	Adebayo.Adeyemi@CCSpark.io	24/12/2023	16/01/2024
-                    Cloud Security Consulting	Consulting on securing cloud environments, protecting data, and ensuring compliance with regulations.	100036	Santander	1	Santander UK	UK	EU	Consulting	0.5	Prospecting	50726	£	Adebayo.Adeyemi@CCSpark.io	08/01/2024	31/01/2024
-                    DevOps Transformation	Services to implement DevOps practices, improving collaboration, and accelerating software delivery.	100037	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.45	Qualification	1857088	£	Adebayo.Adeyemi@CCSpark.io	23/01/2024	15/02/2024
-                    IT Risk Management	Identification and management of IT risks to protect business assets and ensure continuity.	100038	Santander	1	Santander DE	DE	EU	Consulting	0.7	Qualification	612207	£	Thomas.Turner@CCSpark.io	07/02/2024	01/03/2024
-                    Software Development	Custom software development services to meet specific business requirements and enhance operations.	100039	Santander	1	Santander DE	DE	EU	Consulting	30	Qualification	8548486	£	Thomas.Turner@CCSpark.io	22/02/2024	16/03/2024
-                    IT Compliance Consulting	Consulting on achieving and maintaining compliance with industry regulations and standards.	100040	Santander	1	Santander IE	IE	EU	Consulting	30	Qualification	2430206	£	Thomas.Turner@CCSpark.io	08/03/2024	31/03/2024
-                    IT Asset Management	Management of IT assets to optimize usage, reduce costs, and ensure compliance.	100041	Santander	1	Santander FR	FR	EU	Consulting	90	Qualification	1423898	£	Jessica.Thomas@CCSpark.io	22/03/2024	14/04/2024
-                    IT Operations Consulting	Consulting on improving IT operations, enhancing efficiency, and reducing downtime.	100042	Bosch	2	Bosch IT	IT	EU	Consulting	60	Qualification	4991963	£	Megan.Hernandez@CCSpark.io	06/04/2024	29/04/2024
-                    IT Project Management	Project management services to ensure successful delivery of IT projects on time and within budget.	100043	Bosch	2	Bosch DE	DE	EU	Consulting	0.25	Qualification	4454482	£	Megan.Hernandez@CCSpark.io	11/08/2024	03/09/2024
-                    IT Vendor Management	Management of IT vendors to ensure quality service delivery and cost-effectiveness.	100044	Bosch	2	Bosch DE	DE	EU	Consulting	0.45	Qualification	293600	£	Jessica.Thomas@CCSpark.io	02/09/2024	25/09/2024
-                    IT Outsourcing Consulting	Consulting on outsourcing IT services to improve efficiency and reduce costs.	100045	BMW Group	3	BMW Group JP	JP	ASIA	Consulting	0.5	Prospecting	726522	£	Megan.Hernandez@CCSpark.io	07/09/2024	30/09/2024
-                    IT Cost Optimization	Services to optimize IT costs, ensuring maximum value from IT investments.	100046	BMW Group	3	BMW Group JP	JP	ASIA	Consulting	1	Prospecting	1371362	£	Megan.Hernandez@CCSpark.io	04/11/2024	27/11/2024
-                    IT Performance Management	Monitoring and management of IT performance to ensure optimal operation and service delivery.	100047	Audi AG	5	Audi AG UK	UK	EU	Consulting	1	Prospecting	3066779	£	Samantha.Allen@CCSpark.io	09/12/2023	01/01/2024
-                    IT Process Improvement	Consulting on improving IT processes to enhance efficiency and effectiveness.	100048	Audi AG	5	Audi AG UK	UK	EU	Consulting	0.7	Prospecting	3264414	£	Adebayo.Adeyemi@CCSpark.io	24/12/2023	16/01/2024
-                    IT Infrastructure Audit	Comprehensive audit of IT infrastructure to identify areas for improvement and ensure compliance.	100049	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	8186015	£	Adebayo.Adeyemi@CCSpark.io	08/01/2024	31/01/2024
-                    IT Training Services	Training services to enhance the skills and knowledge of IT staff.	100050	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	7835765	£	Samantha.Allen@CCSpark.io	23/01/2024	15/02/2024
-                    IT Support Services	Ongoing support services to ensure the smooth operation of IT systems and resolve issues promptly.	100051	Santander	1	Santander IE	IE	EU	Consulting	1	Quote	6759459	£	Liu.Wei@CCSpark.io	08/01/2024	31/01/2024
-                    IT Staffing Services	Staffing services to provide skilled IT professionals for short-term or long-term projects.	100052	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.7	Prospecting	7129885	£	Jessica.Thomas@CCSpark.io	23/01/2024	15/02/2024";
+            string csvData = @"Santander - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100000	Santander	1	Santander UK	UK	EU	Tech Sourcing	0.75	Quote	3750000	£	Adebayo.Adeyemi@CCSpark.io	02/12/2024	31/12/2024
+                Bosch - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100001	Bosch	2	Bosch UK	UK	EU	Tech Sourcing	0.5	Quote	750000	£	Jacob.Harris@CCSpark.io	09/12/2024	31/12/2024
+                Wingtip Toys  - Device refresh program	Customer  has an ageing estate of end user devices that need to be refreshed in the next 3-6 months	100002	BMW Group	3	BMW Group UK	UK	EU	Tech Sourcing	1	Quote	1500000	£	Adebayo.Adeyemi@CCSpark.io	04/11/2024	31/12/2024
+                Zero-Touch Provisioning for Corporate Devices:	Implement automated enrollment options for corporate devices to streamline the provisioning process and reduce manual intervention	100003	Santander	1	Santander DE	DE	EU	Managed Service	0.25	Qualification	234000	£	Jacob.Harris@CCSpark.io	09/12/2023	01/01/2024
+                BYOD Enrollment and Management:	Provide a self-service Company Portal for users to enroll their BYOD devices, ensuring secure access to corporate resources	100004	Santander	1	Santander Group	DE	EU	Tech Sourcing	0.45	Qualification	234110	£	Jacob.Harris@CCSpark.io	24/12/2023	16/01/2024
+                Custom Terms and Conditions at Enrollment	Deliver custom terms and conditions during device enrollment to ensure compliance with company policies	100005	Santander	1	Santander DE	DE	EU	Consulting	0.5	Prospecting	34000	£	Amanda.King@CCSpark.io	08/01/2024	31/01/2024
+                Remote Assistance for Device Support	Offer remote assistance to troubleshoot and resolve device issues, enhancing user satisfaction and reducing downtime	100006	Santander	1	Santander IE	IE	EU	Consulting	1	Closed Won	432502	£	Adebayo.Adeyemi@CCSpark.io	23/01/2024	15/02/2024
+                Selective Wipe for Lost or Stolen Devices	Perform selective wipes on lost or stolen devices to protect corporate data while preserving personal information	100007	Santander	1	Santander FR	US 	US	Managed Service	1	Closed Won	1002303	£	Adebayo.Adeyemi@CCSpark.io	07/02/2024	01/03/2024
+                Deploy Device Security Policies	Implement and enforce device security policies to protect corporate data and ensure compliance with security standards	100008	Bosch	2	Bosch IE	US	US	Managed Service	0.7	Qualification	3458245	£	Liu.Wei@CCSpark.io	22/02/2024	16/03/2024
+                Install Mandatory Apps	Deploy mandatory applications to devices to ensure users have the necessary tools for their roles	100009	Bosch	2	Bosch FR	FR	EU	Tech Sourcing	0.5	Qualification	4739792	£	Emily.Johnson@CCSpark.io	08/03/2024	31/03/2024
+                Restrict Access to Corporate Resources: 	Restrict access to corporate resources if device policies are violated, such as using a jailbroken device	100010	Bosch	2	Bosch UK	UK	EU	Tech Sourcing	0.5	Quote	3175331	£	Emily.Johnson@CCSpark.io	22/03/2024	14/04/2024
+                Protect Corporate Data	Protect corporate data by restricting actions such as copy/cut/paste/save outside of the managed app ecosystem	100011	BMW Group	3	BMW Group US	US	US	Managed Service	0.45	Quote	4019959	£	Thomas.Turner@CCSpark.io	06/04/2024	29/04/2024
+                Report on Device and App Compliance	Generate reports on device and app compliance to monitor adherence to security policies	100012	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.7	Closed Lost	424884	£	Liu.Wei@CCSpark.io	21/04/2024	14/05/2024
+                Employee Device Refresh Program	: Implement a device refresh program to ensure employees have up-to-date and efficient devices for their work	100013	Audi AG	5	Audi AG DE	DE	EU	Consulting	0.3	Quote	1702300	£	Thomas.Turner@CCSpark.io	04/08/2024	27/08/2024
+                New Hire Device Provisioning:	Provide new hires with the necessary devices and equipment to ensure a smooth onboarding process	100014	Audi AG	5	Audi AG IE	IE	EU	Tech Sourcing	0.3	Quote	5382643	£	Emily.Johnson@CCSpark.io	18/08/2024	10/09/2024
+                Primary Device Replacements	Manage primary device replacements for employees, ensuring minimal disruption to their work	100015	AOK Plus	6	AOK Plus FR	FR	EU	Managed Service	0.8	Quote	616384	£	Thomas.Turner@CCSpark.io	02/09/2024	25/09/2024
+                Surface Device Management	 Offer comprehensive management of Surface devices, including deployment, security, and support	100016	AOK Plus	6	AOK Plus IE	IE	EU	Managed Service	0.6	Quote	8530913	£	Jacob.Harris@CCSpark.io	17/09/2024	10/10/2024
+                Enhanced Lifecycle Management for D365	Assist customers with application enhancements, platform updates, and ALM best practices using Azure DevOps	100017	Santander	1	Santander DE	DE	EU	Managed Service	0.2	Closed Lost	2909680	£	Jacob.Harris@CCSpark.io	02/10/2024	25/10/2024
+                Supplier Lifecycle Management	: Implement a supplier lifecycle management process to ensure compliance and manage supplier relationships effectively	100018	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.5	Quote	6622684	£	Adebayo.Adeyemi@CCSpark.io	17/10/2024	09/11/2024
+                Device Inventory Management	Track and manage device inventory to ensure optimal utilization and reduce costs	100019	BMW Group	3	BMW Group IE	IE	EU	Tech Sourcing	1	Quote	2737663	£	Jessica.Thomas@CCSpark.io	01/11/2024	24/11/2024
+                Device Decommissioning and Disposal	 Manage the decommissioning and disposal of devices to ensure data security and environmental compliance	100020	Bosch	2	Bosch FR	FR	EU	Consulting	1	Closed Won	3581566	£	Jessica.Thomas@CCSpark.io	16/11/2024	09/12/2024
+                Device Maintenance and Support	Provide ongoing maintenance and support for devices to ensure they remain in optimal working condition	100021	Bosch	2	Bosch UK	UK	EU	Managed Service	1	Closed Won	2263141	£	Adebayo.Adeyemi@CCSpark.io	01/12/2024	24/12/2024
+                Device Compliance and Security Audits	Conduct regular compliance and security audits to identify and address potential vulnerabilities	100022	Telefonica	7	Telefonica UK	UK	EU	Consulting	0.5	Quote	5464675	£	Emily.Johnson@CCSpark.io	16/12/2024	08/01/2025
+                IT Infrastructure Consulting	Comprehensive consulting to design, implement, and manage IT infrastructure, ensuring optimal performance and scalability.	100023	Santander	1	Santander BR	BR	LATAM	Consulting	0.25	Quote	1185701	£	Emily.Johnson@CCSpark.io	31/12/2024	23/01/2025
+                Cybersecurity Assessment	In-depth assessment of cybersecurity measures to identify vulnerabilities and recommend improvements.	100024	Santander	1	Santander BR	BR	LATAM	Consulting	0.45	Quote	8908635	£	Jacob.Harris@CCSpark.io	22/02/2024	16/03/2024
+                Cloud Migration Services	Assistance with migrating data and applications to the cloud, ensuring minimal disruption and maximum efficiency.	100025	Santander	1	Santander DE	DE	EU	Consulting	0.5	Quote	937899	£	Jacob.Harris@CCSpark.io	08/03/2024	31/03/2024
+                Data Center Optimization	Optimization of data center operations to enhance performance, reduce costs, and improve energy efficiency.	100026	Santander	1	Santander DE	DE	EU	Consulting	1	Quote	4206898	£	Megan.Hernandez@CCSpark.io	22/03/2024	14/04/2024
+                Network Design Consulting	Expert consulting on designing robust and scalable network architectures tailored to business needs.	100027	Bosch	2	Bosch IE	IE	EU	Consulting	1	Quote	2096035	£	Adebayo.Adeyemi@CCSpark.io	06/04/2024	29/04/2024
+                IT Strategy Consulting	Strategic consulting to align IT initiatives with business goals, ensuring long-term success and innovation.	100028	Bosch	2	Bosch FR	FR	EU	Consulting	0.7	Quote	2338025	£	Amanda.King@CCSpark.io	13/04/2024	06/05/2024
+                Application Modernization	Modernization of legacy applications to improve functionality, performance, and user experience.	100029	Bosch	2	Bosch IE	IE	EU	Consulting	0.5	Quote	2791488	£	Liu.Wei@CCSpark.io	04/08/2024	27/08/2024
+                Digital Transformation	Comprehensive services to drive digital transformation, enhancing business processes and customer engagement.	100030	BMW Group	3	BMW Group SA	SA	AFRICA	Consulting	0.5	Quote	2170016	£	Amanda.King@CCSpark.io	11/08/2024	03/09/2024
+                Managed IT Services	Ongoing management and support of IT infrastructure and services, ensuring reliability and efficiency.	100031	BMW Group	3	BMW Group SA	SA	AFRICA	Consulting	0.45	Quote	1059580	£	Amanda.King@CCSpark.io	02/09/2024	25/09/2024
+                Business Continuity Planning	Development of business continuity plans to ensure operations can continue during and after a disaster.	100032	Audi AG	5	Audi AG IE	IE	EU	Consulting	0.7	Quote	2120210	£	Liu.Wei@CCSpark.io	07/09/2024	30/09/2024
+                IT Governance Consulting	Consulting on establishing IT governance frameworks to ensure compliance and effective management of IT resources.	100033	Audi AG	5	Audi AG FR	FR	EU	Consulting	30	Quote	8340861	£	Liu.Wei@CCSpark.io	04/11/2024	27/11/2024
+                Enterprise Architecture	Design and implementation of enterprise architecture to support business strategy and operations.	100034	AOK Plus	6	AOK Plus UK	UK	EU	Consulting	30	Quote	8358724	£	Thomas.Turner@CCSpark.io	09/12/2023	01/01/2024
+                IT Service Management	Implementation of IT service management practices to improve service delivery and customer satisfaction.	100035	AOK Plus	6	AOK Plus UK	UK	EU	Consulting	90	Prospecting	3492480	£	Adebayo.Adeyemi@CCSpark.io	24/12/2023	16/01/2024
+                Cloud Security Consulting	Consulting on securing cloud environments, protecting data, and ensuring compliance with regulations.	100036	Santander	1	Santander UK	UK	EU	Consulting	0.5	Prospecting	50726	£	Adebayo.Adeyemi@CCSpark.io	08/01/2024	31/01/2024
+                DevOps Transformation	Services to implement DevOps practices, improving collaboration, and accelerating software delivery.	100037	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.45	Qualification	1857088	£	Adebayo.Adeyemi@CCSpark.io	23/01/2024	15/02/2024
+                IT Risk Management	Identification and management of IT risks to protect business assets and ensure continuity.	100038	Santander	1	Santander DE	DE	EU	Consulting	0.7	Qualification	612207	£	Thomas.Turner@CCSpark.io	07/02/2024	01/03/2024
+                Software Development	Custom software development services to meet specific business requirements and enhance operations.	100039	Santander	1	Santander DE	DE	EU	Consulting	30	Qualification	8548486	£	Thomas.Turner@CCSpark.io	22/02/2024	16/03/2024
+                IT Compliance Consulting	Consulting on achieving and maintaining compliance with industry regulations and standards.	100040	Santander	1	Santander IE	IE	EU	Consulting	30	Qualification	2430206	£	Thomas.Turner@CCSpark.io	08/03/2024	31/03/2024
+                IT Asset Management	Management of IT assets to optimize usage, reduce costs, and ensure compliance.	100041	Santander	1	Santander FR	FR	EU	Consulting	90	Qualification	1423898	£	Jessica.Thomas@CCSpark.io	22/03/2024	14/04/2024
+                IT Operations Consulting	Consulting on improving IT operations, enhancing efficiency, and reducing downtime.	100042	Bosch	2	Bosch IT	IT	EU	Consulting	60	Qualification	4991963	£	Megan.Hernandez@CCSpark.io	06/04/2024	29/04/2024
+                IT Project Management	Project management services to ensure successful delivery of IT projects on time and within budget.	100043	Bosch	2	Bosch DE	DE	EU	Consulting	0.25	Qualification	4454482	£	Megan.Hernandez@CCSpark.io	11/08/2024	03/09/2024
+                IT Vendor Management	Management of IT vendors to ensure quality service delivery and cost-effectiveness.	100044	Bosch	2	Bosch DE	DE	EU	Consulting	0.45	Qualification	293600	£	Jessica.Thomas@CCSpark.io	02/09/2024	25/09/2024
+                IT Outsourcing Consulting	Consulting on outsourcing IT services to improve efficiency and reduce costs.	100045	BMW Group	3	BMW Group JP	JP	ASIA	Consulting	0.5	Prospecting	726522	£	Megan.Hernandez@CCSpark.io	07/09/2024	30/09/2024
+                IT Cost Optimization	Services to optimize IT costs, ensuring maximum value from IT investments.	100046	BMW Group	3	BMW Group JP	JP	ASIA	Consulting	1	Prospecting	1371362	£	Megan.Hernandez@CCSpark.io	04/11/2024	27/11/2024
+                IT Performance Management	Monitoring and management of IT performance to ensure optimal operation and service delivery.	100047	Audi AG	5	Audi AG UK	UK	EU	Consulting	1	Prospecting	3066779	£	Samantha.Allen@CCSpark.io	09/12/2023	01/01/2024
+                IT Process Improvement	Consulting on improving IT processes to enhance efficiency and effectiveness.	100048	Audi AG	5	Audi AG UK	UK	EU	Consulting	0.7	Prospecting	3264414	£	Adebayo.Adeyemi@CCSpark.io	24/12/2023	16/01/2024
+                IT Infrastructure Audit	Comprehensive audit of IT infrastructure to identify areas for improvement and ensure compliance.	100049	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	8186015	£	Adebayo.Adeyemi@CCSpark.io	08/01/2024	31/01/2024
+                IT Training Services	Training services to enhance the skills and knowledge of IT staff.	100050	AOK Plus	6	AOK Plus US	US	US	Consulting	0.5	Prospecting	7835765	£	Samantha.Allen@CCSpark.io	23/01/2024	15/02/2024
+                IT Support Services	Ongoing support services to ensure the smooth operation of IT systems and resolve issues promptly.	100051	Santander	1	Santander IE	IE	EU	Consulting	1	Quote	6759459	£	Liu.Wei@CCSpark.io	08/01/2024	31/01/2024
+                IT Staffing Services	Staffing services to provide skilled IT professionals for short-term or long-term projects.	100052	BMW Group	3	BMW Group DE	DE	EU	Consulting	0.7	Prospecting	7129885	£	Jessica.Thomas@CCSpark.io	23/01/2024	15/02/2024
+                ";
 
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Opportunity> opportunities = new List<Opportunity>();
 
             foreach (var line in lines)
             {
-                string[] values = line.Split('\t');
-                opportunities.Add(new Opportunity
+                string[] values = line.Split('\t').Select(v => v.Trim()).ToArray();
+
+                if (values.Length < 16)
                 {
-                    Name = values[0],
-                    Description = values[1],
-                    ParentAccountId = int.Parse(values[4]),
-                    ParentAccount = values[3],
-                    OpportunityID = values[2],
-                    Account = values[5],
-                    Territory = values[6],
-                    Region = values[7],
-                    ServiceLine = values[8],
-                    Probability = double.Parse(values[9].TrimEnd('%')) / 100,
-                    StageName = values[10],
-                    Amount = decimal.Parse(values[11]),
-                    Currency = values[12],
-                    Owner = values[13],
-                    DateCreated = DateTime.Parse(values[14]),
-                    CloseDate = DateTime.Parse(values[15])
-                });
+                    // Handle the error or log it
+                    Console.WriteLine("Error: Line does not contain enough values.");
+                    continue;
+                }
+
+                try
+                {
+                    opportunities.Add(new Opportunity
+                    {
+                        Name = values[0].Trim(),
+                        Description = values[1],
+                        ParentAccountId = int.Parse(values[4]),
+                        ParentAccount = values[3],
+                        OpportunityID = values[2],
+                        Account = values[5],
+                        Territory = values[6],
+                        Region = values[7],
+                        ServiceLine = values[8],
+                        Probability = double.Parse(values[9]),
+                        StageName = values[10],
+                        Amount = decimal.Parse(values[11], System.Globalization.CultureInfo.InvariantCulture),
+                        Currency = values[12],
+                        Owner = values[13],
+                        DateCreated = DateTime.Parse(values[14], new System.Globalization.CultureInfo("en-GB")),
+                        CloseDate = DateTime.Parse(values[15], new System.Globalization.CultureInfo("en-GB"))
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // Log the error and continue with the next line
+                    Console.WriteLine($"Error parsing line: {line}. Exception: {ex.Message}");
+                }
             }
 
             context.Opportunities.AddRange(opportunities);
             context.SaveChanges();
+        }
+
+        private static void SeedOpportunities(OpportunityDb context)
+        {
+            if (!context.Opportunities.Any())
+            {
+                var opportunities = new List<Opportunity>
+                {
+                    new Opportunity
+                    {
+                        Name = "Opportunity 1",
+                        Description = "Description for Opportunity 1",
+                        ParentAccountId = 1,
+                        ParentAccount = "Parent Account 1",
+                        OpportunityID = "OPP001",
+                        Account = "Account 1",
+                        Territory = "Territory 1",
+                        Region = "Region 1",
+                        ServiceLine = "Service Line 1",
+                        Probability = 80,
+                        StageName = "Stage 1",
+                        Amount = 10000m,
+                        Currency = "USD",
+                        Owner = "Owner 1",
+                        DateCreated = DateTime.Parse("2023-01-01"),
+                        CloseDate = DateTime.Parse("2023-06-01")
+                    },
+                    new Opportunity
+                    {
+                        Name = "Opportunity 2",
+                        Description = "Description for Opportunity 2",
+                        ParentAccountId = 2,
+                        ParentAccount = "Parent Account 2",
+                        OpportunityID = "OPP002",
+                        Account = "Account 2",
+                        Territory = "Territory 2",
+                        Region = "Region 2",
+                        ServiceLine = "Service Line 2",
+                        Probability = 70,
+                        StageName = "Stage 2",
+                        Amount = 20000m,
+                        Currency = "USD",
+                        Owner = "Owner 2",
+                        DateCreated = DateTime.Parse("2023-02-01"),
+                        CloseDate = DateTime.Parse("2023-07-01")
+                    },
+                    new Opportunity
+                    {
+                        Name = "Opportunity 3",
+                        Description = "Description for Opportunity 3",
+                        ParentAccountId = 3,
+                        ParentAccount = "Parent Account 3",
+                        OpportunityID = "OPP003",
+                        Account = "Account 3",
+                        Territory = "Territory 3",
+                        Region = "Region 3",
+                        ServiceLine = "Service Line 3",
+                        Probability = 90,
+                        StageName = "Stage 3",
+                        Amount = 30000m,
+                        Currency = "USD",
+                        Owner = "Owner 3",
+                        DateCreated = DateTime.Parse("2023-03-01"),
+                        CloseDate = DateTime.Parse("2023-08-01")
+                    },
+                    new Opportunity
+                    {
+                        Name = "Opportunity 4",
+                        Description = "Description for Opportunity 4",
+                        ParentAccountId = 4,
+                        ParentAccount = "Parent Account 4",
+                        OpportunityID = "OPP004",
+                        Account = "Account 4",
+                        Territory = "Territory 4",
+                        Region = "Region 4",
+                        ServiceLine = "Service Line 4",
+                        Probability = 60,
+                        StageName = "Stage 4",
+                        Amount = 40000m,
+                        Currency = "USD",
+                        Owner = "Owner 4",
+                        DateCreated = DateTime.Parse("2023-04-01"),
+                        CloseDate = DateTime.Parse("2023-09-01")
+                    },
+                    new Opportunity
+                    {
+                        Name = "Opportunity 5",
+                        Description = "Description for Opportunity 5",
+                        ParentAccountId = 5,
+                        ParentAccount = "Parent Account 5",
+                        OpportunityID = "OPP005",
+                        Account = "Account 5",
+                        Territory = "Territory 5",
+                        Region = "Region 5",
+                        ServiceLine = "Service Line 5",
+                        Probability = 50,
+                        StageName = "Stage 5",
+                        Amount = 50000m,
+                        Currency = "USD",
+                        Owner = "Owner 5",
+                        DateCreated = DateTime.Parse("2023-05-01"),
+                        CloseDate = DateTime.Parse("2023-10-01")
+                    }
+                };
+
+                context.Opportunities.AddRange(opportunities);
+                context.SaveChanges();
+            }
         }
 
         private static void SeedCustomers(CustomerDb context)

@@ -8,51 +8,80 @@ namespace groveale.Endpoints
     {
         public static void MapOrderEndpoints(this IEndpointRouteBuilder routes)
         {
-            var orderHeaderItems = routes.MapGroup("/orderheaders").WithTags("OrderHeader");
+            var orderItems = routes.MapGroup("/orders").WithTags("Order");
 
-            orderHeaderItems.MapGet("/parentCustomer/{parentCustomer}", GetAllOrdersByCustomerName);
-            orderHeaderItems.MapGet("/localCustomer/{localCustomer}", GetAllOrdersByLocalCustomerName);
 
-            orderHeaderItems.MapGet("/{id}/orderitems", GetItemsInOrderById);
-            orderHeaderItems.MapGet("/{salesDocNumber}/orderitems", GetItemsInOrderBySalesDocNumber);
+            orderItems.MapGet("/", GetAllOrders);
+            orderItems.MapGet("/{id}", GetOrderById);
+            orderItems.MapPost("/", CreateOrder);
+            orderItems.MapPut("/{id}", UpdateOrder);
+            orderItems.MapDelete("/{id}", DeleteOrder);
+
+            orderItems.MapGet("/customer/{localCustomerName}", GetOrdersByLocalCustomerName);
+            orderItems.MapGet("/parentCustomer/{parentCustomerName}", GetOrdersByParentCustomerName);
+            orderItems.MapGet("/salesOrder/{salesOrderId}", GetOrdersBySalesOrderId);
         }
 
-        public static async Task<IResult> GetItemsInOrderById(int id, OrderHeaderDb db, OrderDb orderDb)
+        public static async Task<IResult> GetAllOrders(OrderDb db) =>
+            Results.Ok(await db.Orders.ToListAsync());
+
+        public static async Task<IResult> GetOrderById(int id, OrderDb db) =>
+            await db.Orders.FindAsync(id)
+                is Order order
+                    ? Results.Ok(order)
+                    : Results.NotFound();
+
+        public static async Task<IResult> CreateOrder(Order order, OrderDb db)
         {
-            // get order first
-            var order = await db.OrderHeaders.FindAsync(id);
+            db.Orders.Add(order);
+            await db.SaveChangesAsync();
+            return Results.Created($"/orders/{order.Id}", order);
+        }
+
+        public static async Task<IResult> UpdateOrder(int id, Order inputOrder, OrderDb db)
+        {
+            var order = await db.Orders.FindAsync(id);
 
             if (order is null) return Results.NotFound();
 
-            // get items for order
-            var items = await orderDb.Orders.Where(o => o.SalesOrderID == order.SalesDocNumber).ToListAsync();
+            order.ParentCustomerID = inputOrder.ParentCustomerID;
+            order.ParentCustomer = inputOrder.ParentCustomer;
+            order.LocalCustomer = inputOrder.LocalCustomer;
+            order.LocalCustomerID = inputOrder.LocalCustomerID;
+            order.SalesOrderID = inputOrder.SalesOrderID;
+            order.UnitQuantity = inputOrder.UnitQuantity;
+            order.ItemValue = inputOrder.ItemValue;
+            order.StorageLocation = inputOrder.StorageLocation;
+            order.OrderItemName = inputOrder.OrderItemName;
+            order.OrderItemDescription = inputOrder.OrderItemDescription;
+            order.ShippingDestinationCountry = inputOrder.ShippingDestinationCountry;
+            order.ShippingDestinationCity = inputOrder.ShippingDestinationCity;
+            order.ProfitCentre = inputOrder.ProfitCentre;
 
-            if (items is null) return Results.NotFound();
+            await db.SaveChangesAsync();
 
-            return Results.Ok(items);
+            return Results.NoContent();
         }
 
-        public static async Task<IResult> GetItemsInOrderBySalesDocNumber(string salesDocNumber, OrderHeaderDb db, OrderDb orderDb)
+        public static async Task<IResult> DeleteOrder(int id, OrderDb db)
         {
-            // get order first
-            var order = await db.OrderHeaders.FirstOrDefaultAsync(o => o.SalesDocNumber == salesDocNumber);
+            if (await db.Orders.FindAsync(id) is Order order)
+            {
+                db.Orders.Remove(order);
+                await db.SaveChangesAsync();
+                return Results.Ok(order);
+            }
 
-            if (order is null) return Results.NotFound();
-
-            // get items for order
-            var items = await orderDb.Orders.Where(o => o.SalesOrderID == salesDocNumber).ToListAsync();
-
-            if (items is null) return Results.NotFound();
-
-            return Results.Ok(items);
+            return Results.NotFound();
         }
 
-        public static async Task<IResult> GetAllOrdersByCustomerName(string customerName, OrderHeaderDb db) =>
-            Results.Ok(await db.OrderHeaders.Where(o => o.ParentCustomer == customerName).ToListAsync());
+        public static async Task<IResult> GetOrdersByLocalCustomerName(string localCustomerName, OrderDb db) =>
+                Results.Ok(await db.Orders.Where(o => o.LocalCustomer == localCustomerName).ToListAsync());
 
-        public static async Task<IResult> GetAllOrdersByLocalCustomerName(string localCustomerName, OrderHeaderDb db) =>
-            Results.Ok(await db.OrderHeaders.Where(o => o.LocalCustomer == localCustomerName).ToListAsync());
+        public static async Task<IResult> GetOrdersByParentCustomerName(string parentCustomerName, OrderDb db) =>
+            Results.Ok(await db.Orders.Where(o => o.ParentCustomer == parentCustomerName).ToListAsync());
 
-        
+        public static async Task<IResult> GetOrdersBySalesOrderId(string salesOrderId, OrderDb db) =>
+            Results.Ok(await db.Orders.Where(o => o.SalesOrderID == salesOrderId).ToListAsync());
     }
 }

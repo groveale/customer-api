@@ -1,7 +1,10 @@
 /Properties
 /.vscode
+/.config
+/.vs
 /appsettings.Development.json
 /appsettings.json
 /bin
 /obj
 /Properties
+CcApi.csproj.user

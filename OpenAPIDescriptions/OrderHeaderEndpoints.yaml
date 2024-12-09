@@ -1,73 +1,67 @@
 openapi: '3.0.2'
 info:
-  title: Order Management API
+  title: Order Header Management API
   version: '1.0'
-  description: API for managing orders
+  description: API for managing order headers
 
 servers:
-  - url: https://ag-customer-api.azurewebsites.net/orders/  # Replace with actual server URL
+  - url: https://ag-customer-api.azurewebsites.net/orderheaders/  # Replace with actual server URL
 
 components:
   schemas:
-    OrderItem:
+    OrderHeader:
       type: object
       properties:
         id:
           type: integer
-          description: Unique identifier for the order item
-        parentCustomerID:
-          type: integer
-          description: Identifier for the parent customer
-        parentCustomer:
+          description: Unique identifier for the order header
+        salesDocNumber:
           type: string
-          description: Name of the parent customer
+          description: Sales document number
         localCustomer:
           type: string
           description: Name of the local customer
+        parentCustomer:
+          type: string
+          description: Name of the parent customer
+        opportunityID:
+          type: integer
+          description: Associated opportunity identifier
+        salesDocType:
+          type: string
+          description: Type of sales document
+        salesOrganisation:
+          type: string
+          description: Sales organization
+        distributionChannel:
+          type: string
+          description: Distribution channel
+        parentCustomerID:
+          type: string
+          description: Identifier for the parent customer
         localCustomerID:
           type: string
           description: Identifier for the local customer
-        salesOrderID:
+        dateCreated:
           type: string
-          description: Sales order identifier
-        unitQuantity:
-          type: integer
-          description: Quantity of units in the order item
-        itemValue:
-          type: number
-          format: decimal
-          description: Value of the item
-        storageLocation:
+          format: date-time
+          description: Date and time when the order header was created
+        createdBy:
           type: string
-          description: Storage location of the item
-        orderItemName:
-          type: string
-          description: Name of the order item
-        orderItemDescription:
-          type: string
-          description: Description of the order item
-        shippingDestinationCountry:
-          type: string
-          description: Country of the shipping destination
-        shippingDestinationCity:
-          type: string
-          description: City of the shipping destination
-        profitCentre:
-          type: string
-          description: Profit centre associated with the order item
+          description: User who created the order header
       required:
         - id
-        - parentCustomerID
-        - unitQuantity
-        - itemValue
+        - salesDocNumber
+        - localCustomer
+        - parentCustomer
 
 paths:
   /:
     get:
-      summary: Get all orders
+      summary: Get all order headers
       operationId: GetAllOrders
       tags:
-        - Order
+        - OrderHeader
       responses:
         '200':
           description: Successful response
@@ -76,33 +70,33 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  $ref: '#/components/schemas/OrderHeader'
 
     post:
-      summary: Create a new order
+      summary: Create a new order header
       operationId: CreateOrder
       tags:
-        - Order
+        - OrderHeader
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/OrderHeader'
       responses:
         '201':
-          description: Order created successfully
+          description: Order header created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderHeader'
 
   /{id}:
     get:
-      summary: Get a specific order by ID
+      summary: Get a specific order header by ID
       operationId: GetOrderById
       tags:
-        - Order
+        - OrderHeader
       parameters:
         - name: id
           in: path
@@ -115,15 +109,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderHeader'
         '404':
-          description: Order not found
+          description: Order header not found
 
     put:
-      summary: Update an existing order
+      summary: Update an existing order header
       operationId: UpdateOrder
       tags:
-        - Order
+        - OrderHeader
       parameters:
         - name: id
           in: path
@@ -135,18 +129,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/OrderHeader'
       responses:
         '204':
-          description: Order updated successfully
+          description: Order header updated successfully
         '404':
-          description: Order not found
+          description: Order header not found
 
     delete:
-      summary: Delete an order
+      summary: Delete an order header
       operationId: DeleteOrder
       tags:
-        - Order
+        - OrderHeader
       parameters:
         - name: id
           in: path
@@ -155,22 +149,22 @@ paths:
             type: integer
       responses:
         '200':
-          description: Order deleted successfully
+          description: Order header deleted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderHeader'
         '404':
-          description: Order not found
+          description: Order header not found
 
-  /customer/{localCustomerName}:
+  /parentCustomer/{parentCustomer}:
     get:
-      summary: Get orders by local customer name
-      operationId: GetOrdersByLocalCustomerName
+      summary: Get order headers by parent customer name
+      operationId: GetAllOrdersByCustomerName
       tags:
-        - Order
+        - OrderHeader
       parameters:
-        - name: localCustomerName
+        - name: parentCustomer
           in: path
           required: true
           schema:
@@ -183,16 +177,16 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  $ref: '#/components/schemas/OrderHeader'
 
-  /parentCustomer/{parentCustomerName}:
+  /localCustomer/{localCustomer}:
     get:
-      summary: Get orders by parent customer name
-      operationId: GetOrdersByParentCustomerName
+      summary: Get order headers by local customer name
+      operationId: GetAllOrdersByLocalCustomerName
       tags:
-        - Order
+        - OrderHeader
       parameters:
-        - name: parentCustomerName
+        - name: localCustomer
           in: path
           required: true
           schema:
@@ -205,20 +199,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  $ref: '#/components/schemas/OrderHeader'
 
-  /salesOrder/{salesOrderId}:
+  /opportunity/{opportunityId}:
     get:
-      summary: Get orders by sales order ID
-      operationId: GetOrdersBySalesOrderId
+      summary: Get order headers by opportunity ID
+      operationId: GetAllOrdersByOpportunityId
       tags:
-        - Order
+        - OrderHeader
       parameters:
-        - name: salesOrderId
+        - name: opportunityId
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: Successful response
@@ -227,4 +221,4 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  $ref: '#/components/schemas/OrderHeader'

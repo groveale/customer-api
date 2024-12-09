@@ -15,26 +15,11 @@ namespace groveale.Endpoints
             opportunityItems.MapPost("/", CreateOpportunity);
             opportunityItems.MapPut("/{id}", UpdateOpportunity);
             opportunityItems.MapDelete("/{id}", DeleteOpportunity);
-            opportunityItems.MapGet("/account/{account}", GetOpportunitiesByAccountName); // New endpoint
-            opportunityItems.MapGet("/parentAccount/{parentAccount}", GetOpportunitiesByParentAccountName); // New endpoint
+            opportunityItems.MapGet("/account/{accountName}", GetOpportunitiesByAccountName); // New endpoint
+            opportunityItems.MapGet("/parentAccount/{parentAccountName}", GetOpportunitiesByParentAccountName); // New endpoint
 
-            opportunityItems.MapGet("/{id}/orders", GetOrdersInOpportunityById);
         }
 
-        public static async Task<IResult> GetOrdersInOpportunityById(int id, OpportunityDb db, OrderHeaderDb orderHeaderDb)
-        {
-            // get opp first
-            var opportunity = await db.Opportunities.FindAsync(id);
-
-            if (opportunity is null) return Results.NotFound();
-    
-            // get orders for opp
-            var orders = await orderHeaderDb.OrderHeaders.Where(o => o.OpportunityID == id).ToListAsync();
-
-            if (orders is null) return Results.NotFound();
-
-            return Results.Ok(orders);
-        }
 
         public static async Task<IResult> GetOpportunitiesByAccountName(string accountName, OpportunityDb db) =>
             Results.Ok(await db.Opportunities.Where(o => o.Account == accountName).ToListAsync());
@@ -75,6 +60,13 @@ namespace groveale.Endpoints
             opportunity.CloseDate = inputOpportunity.CloseDate;
             opportunity.ServiceLine = inputOpportunity.ServiceLine;
             opportunity.ParentAccountId = inputOpportunity.ParentAccountId;
+            opportunity.ParentAccount = inputOpportunity.ParentAccount;
+            opportunity.Name = inputOpportunity.Name;
+            opportunity.Description = inputOpportunity.Description;
+            opportunity.OpportunityID = inputOpportunity.OpportunityID;
+            opportunity.Region = inputOpportunity.Region;
+
+
 
             await db.SaveChangesAsync();
 
