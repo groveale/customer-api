@@ -34,8 +34,14 @@ namespace groveale.Data
                 var orderHeaderDbContext = services.GetRequiredService<OrderHeaderDb>();
                 orderHeaderDbContext.Database.EnsureCreated();
                 SeedOrderHeaders(orderHeaderDbContext);
+
+                var invoiceDbContext = services.GetRequiredService<InvoiceDb>();
+                invoiceDbContext.Database.EnsureCreated();
+                SeedInvoices(invoiceDbContext);
             }
         }
+
+        
 
         private static void SeedTickets(TicketDb context)
         {
@@ -109,7 +115,7 @@ namespace groveale.Data
                     We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	earl.mitchell@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	08/09/2024	14/09/2024	AOK Plus	6	6
                     The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	sharon.cain@BMWGroup.com	In Progress	Matthew.Jackson@CCSpark.io	11/10/2024	19/10/2024	BMW Group	3	8
                     We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jeffrey.torres@AOKPlus.com	In Progress	Joshua.Harris@CCSpark.io	22/11/2024	24/11/2024	AOK Plus	6	2
-                    The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	New	Brandon.Hall@CCSpark.io	07/12/2024	29/12/2024	Bosch	2	22
+                    The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	New	Brandon.Hall@CCSpark.io	07/12/2024	09/12/2024	Bosch	2	2
                     We need additional resources allocated to our consulting project. The current team is insufficient.	Medium	jessica.lyons@Santander.com	Resolved	Christopher.Wright@CCSpark.io	29/12/2023	04/01/2024	Santander	1	6
                     The materials for our consulting project have not been delivered yet. This delay is causing significant issues.	High	karina.sanchez@Santander.com	In Progress	Justin.Baker@CCSpark.io	13/11/2023	09/02/2024	Santander	1	88
                     We need an extension on the timeline for our consulting project. The current deadline is not feasible.	Low	elaine.sharp@BMWGroup.com	Resolved	Kevin.Perez@CCSpark.io	11/03/2024	14/03/2024	BMW Group	3	3
@@ -359,6 +365,111 @@ namespace groveale.Data
                 context.OrderHeaders.AddRange(
                     orderHeaders
                 );
+                context.SaveChanges();
+            }
+        }
+
+
+        private static void SeedInvoices(InvoiceDb context)
+        {
+            if (!context.Invoices.Any())
+            {
+                string csvData = @"100002	SDN0001	INVOIC0001	3	BMW Group	LC03	BMW Group UK	14/04/2024	17/05/2024	£	1735066
+                    100002	SDN0002	INVOIC0002	3	BMW Group	LC03	BMW Group UK	29/04/2024	01/06/2024	£	1763609
+                    100003	SDN0003	INVOIC0003	1	Santander	LC04	Santander DE	06/05/2024	07/06/2024	€	689230
+                    100050	SDN0004	INVOIC0004	6	AOK Plus	LC31	AOK Plus US	27/08/2024	26/09/2024	$	1074105
+                    100023	SDN0005	INVOIC0005	1	Santander	LC20	Santander BR	03/09/2024	05/10/2024	R$	230448
+                    100003	SDN0006	INVOIC0006	1	Santander	LC04	Santander DE	25/09/2024	21/10/2024	€	904065
+                    100048	SDN0007	INVOIC0007	5	Audi AG	LC30	Audi AG UK	30/09/2024	30/10/2024	£	2660260
+                    100019	SDN0008	INVOIC0008	3	BMW Group	LC16	BMW Group IE	27/11/2024	N/A	€	2990224
+                    100009	SDN0009	INVOIC0009	2	Bosch	LC09	Bosch FR	01/01/2024	28/01/2024	€	1334916
+                    100017	SDN0010	INVOIC0010	1	Santander	LC04	Santander DE	16/01/2024	11/02/2024	€	966461
+                    100017	SDN0011	INVOIC0011	1	Santander	LC04	Santander DE	31/01/2024	03/03/2024	€	1689308
+                    100044	SDN0012	INVOIC0012	2	Bosch	LC28	Bosch DE	15/02/2024	15/03/2024	€	2829691
+                    100015	SDN0013	INVOIC0013	6	AOK Plus	LC14	AOK Plus FR	01/03/2024	31/03/2024	€	2624999
+                    100050	SDN0014	INVOIC0014	6	AOK Plus	LC31	AOK Plus US	16/03/2024	19/04/2024	$	291998
+                    100023	SDN0015	INVOIC0015	1	Santander	LC20	Santander BR	31/03/2024	29/04/2024	R$	1304135
+                    100003	SDN0016	INVOIC0016	1	Santander	LC04	Santander DE	14/04/2024	18/05/2024	€	1728758
+                    100048	SDN0017	INVOIC0017	5	Audi AG	LC30	Audi AG UK	29/04/2024	25/05/2024	£	453860
+                    100019	SDN0018	INVOIC0018	3	BMW Group	LC16	BMW Group IE	03/09/2024	06/10/2024	€	2361331
+                    100045	SDN0019	INVOIC0019	3	BMW Group	LC29	BMW Group JP	25/09/2024	26/10/2024	¥	713908
+                    100009	SDN0020	INVOIC0020	2	Bosch	LC09	Bosch FR	30/09/2024	N/A	€	2276078
+                    100009	SDN0021	INVOIC0021	2	Bosch	LC09	Bosch FR	27/11/2024	N/A	€	2505627
+                    100017	SDN0022	INVOIC0022	1	Santander	LC04	Santander DE	01/01/2024	26/01/2024	€	506441
+                    100017	SDN0023	INVOIC0023	1	Santander	LC04	Santander DE	16/01/2024	11/02/2024	€	2428690
+                    100044	SDN0024	INVOIC0024	2	Bosch	LC28	Bosch DE	31/01/2024	01/03/2024	€	1050879
+                    100015	SDN0025	INVOIC0025	6	AOK Plus	LC14	AOK Plus FR	15/02/2024	21/03/2024	€	1917278
+                    100043	SDN0026	INVOIC0026	2	Bosch	LC28	Bosch DE	31/01/2024	04/03/2024	€	15007
+                    100043	SDN0027	INVOIC0027	2	Bosch	LC28	Bosch DE	15/02/2024	17/03/2024	€	116645
+                    100043	SDN0028	INVOIC0028	2	Bosch	LC28	Bosch DE	09/11/2024	N/A	€	371173
+                    100024	SDN0029	INVOIC0029	1	Santander	LC20	Santander BR	24/11/2024	N/A	R$	1319176
+                    100048	SDN0030	INVOIC0030	5	Audi AG	LC30	Audi AG UK	09/12/2024	11/01/2025	£	1269687
+                    100051	SDN0031	INVOIC0031	1	Santander	LC06	Santander IE	24/12/2024	22/01/2025	€	640325
+                    100047	SDN0032	INVOIC0032	5	Audi AG	LC30	Audi AG UK	08/01/2025	05/02/2025	£	408110
+                    100050	SDN0033	INVOIC0033	6	AOK Plus	LC31	AOK Plus US	23/01/2025	25/02/2025	$	2664062
+                    100023	SDN0034	INVOIC0034	1	Santander	LC20	Santander BR	16/03/2024	19/04/2024	R$	1687293
+                    100003	SDN0035	INVOIC0035	1	Santander	LC04	Santander DE	31/03/2024	25/04/2024	€	2204142
+                    100048	SDN0036	INVOIC0036	5	Audi AG	LC30	Audi AG UK	27/11/2024	N/A	£	2866935
+                    100019	SDN0037	INVOIC0037	3	BMW Group	LC16	BMW Group IE	01/01/2024	01/02/2024	€	1225847
+                    100045	SDN0038	INVOIC0038	3	BMW Group	LC29	BMW Group JP	16/01/2024	11/02/2024	¥	1155587
+                    100009	SDN0039	INVOIC0039	2	Bosch	LC09	Bosch FR	31/01/2024	29/02/2024	€	1906079
+                    100047	SDN0040	INVOIC0040	5	Audi AG	LC30	Audi AG UK	15/02/2024	12/03/2024	£	511997
+                    100050	SDN0041	INVOIC0041	6	AOK Plus	LC31	AOK Plus US	31/01/2024	05/03/2024	$	872767
+                    100023	SDN0042	INVOIC0042	1	Santander	LC20	Santander BR	15/02/2024	14/03/2024	R$	868548
+                    100003	SDN0043	INVOIC0043	1	Santander	LC04	Santander DE	09/11/2024	N/A	€	1928289
+                    100045	SDN0044	INVOIC0044	3	BMW Group	LC29	BMW Group JP	24/11/2024	N/A	¥	2511379
+                    100009	SDN0045	INVOIC0045	2	Bosch	LC09	Bosch FR	09/12/2024	N/A	€	2802556
+                    100009	SDN0046	INVOIC0046	2	Bosch	LC09	Bosch FR	24/12/2024	N/A	€	2385514
+                    100017	SDN0047	INVOIC0047	1	Santander	LC04	Santander DE	31/03/2024	N/A	€	2286047
+                    100017	SDN0048	INVOIC0048	1	Santander	LC04	Santander DE	27/11/2024	N/A	€	1217756
+                    100044	SDN0049	INVOIC0049	2	Bosch	LC28	Bosch DE	01/01/2024	29/02/2024	€	780978
+                    100015	SDN0050	INVOIC0050	6	AOK Plus	LC14	AOK Plus FR	16/01/2024	N/A	€	2788355
+                    ";
+
+                string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                List<Invoice> invoices = new List<Invoice>();
+
+                foreach (var line in lines)
+                {
+                    string[] values = line.Split('\t').Select(v => v.Trim()).ToArray();
+
+                    if (values.Length < 11)
+                    {
+                        // Handle the error or log it
+                        Console.WriteLine("Error: Line does not contain enough values.");
+                        continue;
+                    }
+
+                    try
+                    {
+                        DateTime? paymentDate = null;
+                        if (!string.IsNullOrEmpty(values[8]) && values[8] != "N/A")
+                        {
+                            paymentDate = DateTime.ParseExact(values[8], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        }
+
+                        invoices.Add(new Invoice
+                        {
+                            SalesDocNumber = values[1],
+                            InvoiceNumber = values[2],
+                            ParentCustomerID = int.Parse(values[3]),
+                            ParentCustomer = values[4],
+                            LocalCustomerID = values[5],
+                            LocalCustomer = values[6],
+                            InvoiceDate = DateTime.ParseExact(values[7], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            PaymentDate = paymentDate,
+                            Currency = values[9],
+                            TotalAmount = decimal.Parse(values[10], CultureInfo.InvariantCulture)
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error and continue with the next line
+                        Console.WriteLine($"Error parsing line: {line}. Exception: {ex.Message}");
+                    }
+                }
+
+                context.Invoices.AddRange(invoices);
                 context.SaveChanges();
             }
         }

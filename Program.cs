@@ -26,6 +26,7 @@ builder.Services.AddDbContext<TicketDb>(opt => opt.UseInMemoryDatabase("TicketLi
 builder.Services.AddDbContext<OpportunityDb>(opt => opt.UseInMemoryDatabase("OpportunityList"));
 builder.Services.AddDbContext<CustomerDb>(opt => opt.UseInMemoryDatabase("CustomerList"));
 builder.Services.AddDbContext<OrderHeaderDb>(opt => opt.UseInMemoryDatabase("OrderHeaderList"));
+builder.Services.AddDbContext<InvoiceDb>(opt => opt.UseInMemoryDatabase("InvoiceList"));
 
 
 
@@ -62,5 +63,7 @@ app.MapTicketEndpoints();
 app.MapOpportunityEndpoints();
 app.MapOrderEndpoints();
 app.MapOrderHeaderEndpoints();
+    
+app.MapInvoiceEndpoints();
 
 app.Run();

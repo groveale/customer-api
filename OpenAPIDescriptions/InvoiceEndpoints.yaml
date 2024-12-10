@@ -1,0 +1,228 @@
+openapi: '3.0.2'
+info:
+  title: Invoice Management API
+  version: '1.0'
+  description: API for managing invoices
+
+servers:
+  - url: https://ag-customer-api.azurewebsites.net/  # Replace with your actual server URL
+
+components:
+  schemas:
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the invoice
+        salesDocNumber:
+          type: string
+          description: Sales document number
+        invoiceNumber:
+          type: string
+          description: Invoice number
+        parentCustomerID:
+          type: integer
+          description: Unique identifier of the parent customer
+        parentCustomer:
+          type: string
+          description: Name of the parent customer
+        localCustomerID:
+          type: integer
+          description: Unique identifier of the local customer
+        localCustomer:
+          type: string
+          description: Name of the local customer
+        invoiceDate:
+          type: string
+          format: date
+          description: Date of the invoice
+        paymentDate:
+          type: string
+          format: date
+          description: Date payment is due
+        currency:
+          type: string
+          description: Currency of the invoice
+        totalAmount:
+          type: number
+          format: double
+          description: Total amount of the invoice
+      required:
+        - id
+        - salesDocNumber
+        - invoiceNumber
+        - parentCustomer
+        - localCustomer
+
+paths:
+  /invoices:
+    get:
+      summary: Get all invoices
+      operationId: GetAllInvoices
+      tags:
+        - Invoice
+      responses:
+        '200':
+          description: Successful response with list of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+
+    post:
+      summary: Create a new invoice
+      operationId: CreateInvoice
+      tags:
+        - Invoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          description: Invoice created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Invalid input
+
+  /invoices/{id}:
+    get:
+      summary: Get invoice by ID
+      operationId: GetInvoiceById
+      tags:
+        - Invoice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with invoice details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Invoice not found
+
+    put:
+      summary: Update an existing invoice
+      operationId: UpdateInvoice
+      tags:
+        - Invoice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '204':
+          description: Invoice updated successfully
+        '400':
+          description: Invalid input
+        '404':
+          description: Invoice not found
+
+    delete:
+      summary: Delete an invoice
+      operationId: DeleteInvoice
+      tags:
+        - Invoice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Invoice deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Invoice not found
+
+  /invoices/parentCustomer/{parentCustomerName}:
+    get:
+      summary: Get invoices by parent customer name
+      operationId: GetInvoicesByParentCustomerName
+      tags:
+        - Invoice
+      parameters:
+        - name: parentCustomerName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with invoices for the parent customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+
+  /invoices/localCustomer/{localCustomerName}:
+    get:
+      summary: Get invoices by local customer name
+      operationId: GetInvoicesByLocalCustomerName
+      tags:
+        - Invoice
+      parameters:
+        - name: localCustomerName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with invoices for the local customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+
+  /invoices/salesDoc/{salesDocNumber}:
+    get:
+      summary: Get invoices by sales document number
+      operationId: GetInvoicesBySalesDocNumber
+      tags:
+        - Invoice
+      parameters:
+        - name: salesDocNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with invoices for the sales document
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'

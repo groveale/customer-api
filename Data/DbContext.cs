@@ -36,4 +36,11 @@ namespace groveale.Data
 
         public DbSet<Customer> Customers { get; set; }
     }
+
+    public class InvoiceDb : DbContext
+    {
+        public InvoiceDb(DbContextOptions<InvoiceDb> options) : base(options) { }
+
+        public DbSet<Invoice> Invoices { get; set; }
+    }
 }

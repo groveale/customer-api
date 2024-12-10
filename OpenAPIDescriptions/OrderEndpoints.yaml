@@ -9,7 +9,7 @@ servers:
 
 components:
   schemas:
-    OrderItem:
+    Order:
       type: object
       properties:
         id:
