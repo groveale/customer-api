@@ -45,106 +45,107 @@ namespace groveale.Data
 
         private static void SeedTickets(TicketDb context)
         {
-            string csvData = @"I can't access my account and need a password reset ASAP! This is affecting my work.	High	allen.trevino@Bosch.com	New	Fatoumata.Diallo@CCSpark.io	28/04/2024	30/04/2024	Bosch	2	2
-                    VPN is down, and I can't work remotely. Fix this now! This is unacceptable.	Critical	brenda.sanchez@BMWGroup.com	InProgress	Mei.Ling@CCSpark.io	09/08/2024	21/08/2024	BMW Group	3	12
-                    The office printer is not working again. Please fix it as soon as possible.	Medium	patricia.lopez@BMWGroup.com	Resolved	Hunter.Stephens@CCSpark.io	01/01/2024	02/01/2024	BMW Group	3	1
-                    I need new software installed on my computer. It's for a project due next week.	Low	kimberly.medina@Bosch.com	New	Sharon.Compton@CCSpark.io	03/10/2024	06/10/2024	Bosch	2	3
-                    My email isn't syncing on my phone. This is urgent as I need to stay connected.	High	dorothy.bennett@Telefonica.com	New	Sarah.Davis@CCSpark.io	10/04/2024	14/04/2024	Telefonica	7	4
-                    The network is down, and we can't do anything. Fix it now! This is a major disruption.	Critical	james.hansen@Bosch.com	New	Daniel.Anderson@CCSpark.io	16/10/2024	22/10/2024	Bosch	2	6
-                    I need a new laptop for my work. The current one is too slow.	Medium	brandon.myers@BMWGroup.com	Resolved	Matthew.Jackson@CCSpark.io	26/07/2024	03/08/2024	BMW Group	3	8
-                    The application keeps crashing. I need this fixed immediately as it's hindering my work.	High	evan.mercado@AudiAG.com	In Progress	Joshua.Harris@CCSpark.io	28/09/2024	30/09/2024	Audi AG	5	2
-                    Please back up my data. I have important files that need to be secured.	Low	sarah.solis@BMWGroup.com	In Progress	Brandon.Hall@CCSpark.io	02/08/2024	24/08/2024	BMW Group	3	22
-                    We've had a security breach. This needs immediate attention to prevent data loss.	Critical	charles.bauer@Bosch.com	Resolved	Christopher.Wright@CCSpark.io	24/01/2024	30/01/2024	Bosch	2	6
-                    My account is locked, and I can't log in. Please unlock it as soon as possible.	High	russell.marsh@Bosch.com	New	Justin.Baker@CCSpark.io	15/12/2023	12/03/2024	Bosch	2	88
-                    I need the latest software update installed. The current version is outdated.	Medium	corey.wilson@AudiAG.com	New	Kevin.Perez@CCSpark.io	09/10/2024	12/10/2024	Audi AG	5	3
-                    Emails are not being delivered. This is urgent as I am missing important communications.	High	melissa.hall@AudiAG.com	In Progress	Fatoumata.Diallo@CCSpark.io	22/07/2024	26/07/2024	Audi AG	5	4
-                    The internet is very slow. Please check and resolve this issue.	Medium	kathryn.nichols@BMWGroup.com	New	Mei.Ling@CCSpark.io	08/07/2024	11/07/2024	BMW Group	3	3
-                    I need access to the shared drive for team collaboration.	Low	elizabeth.grant@AudiAG.com	New	Hunter.Stephens@CCSpark.io	15/06/2024	24/06/2024	Audi AG	5	9
-                    The video conferencing tool isn't working. This is urgent as I have meetings scheduled.	High	amy.johnson@AudiAG.com	In Progress	Sharon.Compton@CCSpark.io	18/12/2023	12/02/2024	Audi AG	5	56
-                    I need a new email account set up for a new employee.	Medium	steven.martin@AOKPlus.com	Resolved	Sarah.Davis@CCSpark.io	22/08/2024	26/08/2024	AOK Plus	6	4
-                    Please renew my software license. It is about to expire.	Low	jennifer.martinez@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	26/10/2023	06/11/2023	AOK Plus	6	11
-                    My computer is malfunctioning. I need this fixed immediately to continue my work.	High	christopher.lee@AOKPlus.com	Resolved	Matthew.Jackson@CCSpark.io	05/06/2024	14/06/2024	AOK Plus	6	9
-                    I need remote desktop access set up to work from home.	Medium	margaret.moon@AudiAG.com	Resolved	Joshua.Harris@CCSpark.io	11/06/2023	15/06/2023	Audi AG	5	4
-                    The file sharing service isn't working. This is urgent as I need to share files with my team.	High	vanessa.smith@AudiAG.com	New	Brandon.Hall@CCSpark.io	12/09/2023	15/09/2023	Audi AG	5	3
-                    I need more storage space for my projects.	Low	chloe.butler@BMWGroup.com	New	Christopher.Wright@CCSpark.io	01/06/2024	13/06/2024	BMW Group	3	12
-                    Please set up the network printer. We need it for printing documents.	Medium	ryan.lawrence@Bosch.com	In Progress	Justin.Baker@CCSpark.io	24/01/2024	28/01/2024	Bosch	2	4
-                    I need training on the new software. Please schedule a session.	Low	michael.liu@Bosch.com	In Progress	Kevin.Perez@CCSpark.io	22/12/2023	17/01/2024	Bosch	2	26
-                    I can't access the cloud service. This is urgent as I need to retrieve files.	High	javier.wright@Telefonica.com	Resolved	Fatoumata.Diallo@CCSpark.io	23/11/2023	10/01/2024	Telefonica	7	48
-                    Please create a new user account for a new team member.	Medium	jessica.lyons@Santander.com	New	Mei.Ling@CCSpark.io	04/09/2024	03/10/2024	Santander	1	29
-                    My email account has been hacked. This needs immediate attention to secure my data.	Critical	karina.sanchez@Santander.com	Resolved	Hunter.Stephens@CCSpark.io	16/08/2023	08/09/2023	Santander	1	23
-                    I need help with my mobile device. It isn't syncing with my work email.	High	elaine.sharp@BMWGroup.com	Resolved	Sharon.Compton@CCSpark.io	21/06/2024	06/08/2024	BMW Group	3	46
-                    I can't access the database. Please fix this as I need to retrieve information.	Medium	earl.mitchell@AOKPlus.com	Resolved	Sarah.Davis@CCSpark.io	05/06/2023	07/06/2023	AOK Plus	6	2
-                    Please set up VPN access for me. I need it for remote work.	Low	sharon.cain@BMWGroup.com	New	Daniel.Anderson@CCSpark.io	15/03/2023	20/03/2023	BMW Group	3	5
-                    The software isn't compatible with my system. This is urgent as I need it for my work.	High	jeffrey.torres@AOKPlus.com	Resolved	Matthew.Jackson@CCSpark.io	24/07/2024	24/07/2024	AOK Plus	6	0
-                    Please configure the network settings. We are experiencing connectivity issues.	Medium	ian.singh@Bosch.com	Resolved	Joshua.Harris@CCSpark.io	19/03/2024	25/03/2024	Bosch	2	6
-                    Remote access isn't working. This is urgent as I need to access my work files.	High	jessica.lyons@Santander.com	New	Brandon.Hall@CCSpark.io	23/11/2024	24/11/2024	Santander	1	1
-                    I need data recovery services. I accidentally deleted important files.	Low	karina.sanchez@Santander.com	Resolved	Christopher.Wright@CCSpark.io	16/09/2024	20/09/2024	Santander	1	4
-                    I can't open my email attachements again. This is the third time this month that the Outlook app is crashing and preventing me from work,. This is super annoying!!! 	Medium	elaine.sharp@BMWGroup.com	New	Justin.Baker@CCSpark.io	15/04/2024	18/04/2024	BMW Group	3	3
-                    We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	earl.mitchell@AOKPlus.com	In Progress	Kevin.Perez@CCSpark.io	22/10/2024	29/10/2024	AOK Plus	6	7
-                    The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	sharon.cain@BMWGroup.com	In Progress	Fatoumata.Diallo@CCSpark.io	27/05/2024	05/06/2024	BMW Group	3	9
-                    We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	jeffrey.torres@AOKPlus.com	New	Mei.Ling@CCSpark.io	09/11/2024	17/11/2024	AOK Plus	6	8
-                    The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	ian.singh@Bosch.com	In Progress	Hunter.Stephens@CCSpark.io	13/11/2024	23/11/2024	Bosch	2	10
-                    We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Sharon.Compton@CCSpark.io	26/08/2023	06/09/2023	Santander	1	11
-                    The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	karina.sanchez@Santander.com	Resolved	Sarah.Davis@CCSpark.io	06/07/2024	18/07/2024	Santander	1	12
-                    We need additional resources allocated to our consulting project. The current team is insufficient.	Medium	elaine.sharp@BMWGroup.com	In Progress	Daniel.Anderson@CCSpark.io	18/07/2024	31/07/2024	BMW Group	3	13
-                    The materials for our consulting project have not been delivered yet. This delay is causing significant issues.	High	earl.mitchell@AOKPlus.com	In Progress	Matthew.Jackson@CCSpark.io	30/08/2024	13/09/2024	AOK Plus	6	14
-                    We need an extension on the timeline for our consulting project. The current deadline is not feasible.	Low	sharon.cain@BMWGroup.com	New	Joshua.Harris@CCSpark.io	16/09/2023	01/10/2023	BMW Group	3	15
-                    The laptops delivered are damaged. This is unacceptable and needs to be resolved immediately.	Critical	jeffrey.torres@AOKPlus.com	Resolved	Brandon.Hall@CCSpark.io	09/06/2024	25/06/2024	AOK Plus	6	16
-                    We need to adjust the budget for our consulting project. There have been some unexpected expenses.	High	ian.singh@Bosch.com	In Progress	Christopher.Wright@CCSpark.io	05/05/2024	22/05/2024	Bosch	2	17
-                    The documentation for the delivered items is missing. Please provide it as soon as possible.	Medium	jessica.lyons@Santander.com	Resolved	Justin.Baker@CCSpark.io	14/11/2023	02/12/2023	Santander	1	18
-                    We need a status update on our consulting project. There has been no communication for a while.	High	karina.sanchez@Santander.com	Resolved	Kevin.Perez@CCSpark.io	26/12/2024	30/12/2024	Santander	1	4
-                    The quantity of laptops delivered is incorrect. We ordered more than what was delivered.	Medium	elaine.sharp@BMWGroup.com	Resolved	Fatoumata.Diallo@CCSpark.io	24/08/2024	30/08/2024	BMW Group	3	6
-                    We need a review of the deliverables for our consulting project. Please schedule a meeting.	Low	earl.mitchell@AOKPlus.com	In Progress	Mei.Ling@CCSpark.io	23/08/2024	31/08/2024	AOK Plus	6	8
-                    The accessories we ordered have not been delivered yet. This delay is affecting our operations.	High	jessica.lyons@Santander.com	In Progress	Fatoumata.Diallo@CCSpark.io	30/12/2023	01/01/2024	Santander	1	2
-                    We need a risk assessment for our consulting project. There are some potential issues that need to be addressed.	Medium	karina.sanchez@Santander.com	Resolved	Mei.Ling@CCSpark.io	22/02/2024	15/03/2024	Santander	1	22
-                    Some items are missing from the delivered order. Please send the missing items as soon as possible.	Low	elaine.sharp@BMWGroup.com	In Progress	Hunter.Stephens@CCSpark.io	26/03/2024	01/04/2024	BMW Group	3	6
-                    We need to schedule a team meeting for our consulting project. There are some important issues to discuss.	High	earl.mitchell@AOKPlus.com	Resolved	Sharon.Compton@CCSpark.io	02/05/2024	05/05/2024	AOK Plus	6	3
-                    The specifications of the delivered items are incorrect. This needs to be corrected immediately.	Critical	sharon.cain@BMWGroup.com	Resolved	Sarah.Davis@CCSpark.io	07/06/2024	10/06/2024	BMW Group	3	3
-                    There is a delay in the deliverables for our consulting project. This needs to be addressed urgently.	High	jeffrey.torres@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	11/07/2024	15/07/2024	AOK Plus	6	4
-                    The replacement items we requested have not been delivered yet. Please expedite the delivery.	Medium	ian.singh@Bosch.com	New	Matthew.Jackson@CCSpark.io	18/08/2024	20/08/2024	Bosch	2	2
-                    We need to request a change in the scope of our consulting project. The current scope is not feasible.	Low	jessica.lyons@Santander.com	Resolved	Joshua.Harris@CCSpark.io	24/08/2024	25/09/2024	Santander	1	32
-                    The warranty information for the delivered items is missing. Please provide it as soon as possible.	High	karina.sanchez@Santander.com	Resolved	Brandon.Hall@CCSpark.io	29/10/2024	30/10/2024	Santander	1	1
-                    We are facing a shortage of resources for our consulting project. Additional resources are needed.	Medium	elaine.sharp@BMWGroup.com	New	Christopher.Wright@CCSpark.io	31/10/2024	04/12/2024	BMW Group	3	34
-                    The billing for the delivered items is incorrect. Please correct the billing information.	Low	earl.mitchell@AOKPlus.com	Resolved	Justin.Baker@CCSpark.io	18/12/2023	09/01/2024	AOK Plus	6	22
-                    There is a quality issue with the deliverables for our consulting project. This needs to be addressed immediately.	High	sharon.cain@BMWGroup.com	New	Kevin.Perez@CCSpark.io	09/01/2024	14/02/2024	BMW Group	3	36
-                    The software we ordered has not been delivered yet. This delay is affecting our project timeline.	Medium	jeffrey.torres@AOKPlus.com	In Progress	Fatoumata.Diallo@CCSpark.io	11/02/2024	19/03/2024	AOK Plus	6	37
-                    Our consulting project is facing a budget overrun. We need to discuss budget adjustments.	High	ian.singh@Bosch.com	In Progress	Mei.Ling@CCSpark.io	19/03/2024	26/04/2024	Bosch	2	38
-                    The user manuals for the delivered items are missing. Please provide them as soon as possible.	Low	jessica.lyons@Santander.com	New	Hunter.Stephens@CCSpark.io	21/04/2024	30/05/2024	Santander	1	39
-                    We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	karina.sanchez@Santander.com	In Progress	Sharon.Compton@CCSpark.io	25/05/2024	04/07/2024	Santander	1	40
-                    The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	elaine.sharp@BMWGroup.com	In Progress	Sarah.Davis@CCSpark.io	05/08/2024	09/08/2024	BMW Group	3	4
-                    We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	earl.mitchell@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	08/09/2024	14/09/2024	AOK Plus	6	6
-                    The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	sharon.cain@BMWGroup.com	In Progress	Matthew.Jackson@CCSpark.io	11/10/2024	19/10/2024	BMW Group	3	8
-                    We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jeffrey.torres@AOKPlus.com	In Progress	Joshua.Harris@CCSpark.io	22/11/2024	24/11/2024	AOK Plus	6	2
-                    The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	New	Brandon.Hall@CCSpark.io	07/12/2024	09/12/2024	Bosch	2	2
-                    We need additional resources allocated to our consulting project. The current team is insufficient.	Medium	jessica.lyons@Santander.com	Resolved	Christopher.Wright@CCSpark.io	29/12/2023	04/01/2024	Santander	1	6
-                    The materials for our consulting project have not been delivered yet. This delay is causing significant issues.	High	karina.sanchez@Santander.com	In Progress	Justin.Baker@CCSpark.io	13/11/2023	09/02/2024	Santander	1	88
-                    We need an extension on the timeline for our consulting project. The current deadline is not feasible.	Low	elaine.sharp@BMWGroup.com	Resolved	Kevin.Perez@CCSpark.io	11/03/2024	14/03/2024	BMW Group	3	3
-                    The laptops delivered are damaged. This is unacceptable and needs to be resolved immediately.	Critical	earl.mitchell@AOKPlus.com	Resolved	Fatoumata.Diallo@CCSpark.io	17/04/2024	21/04/2024	AOK Plus	6	4
-                    We need to adjust the budget for our consulting project. There have been some unexpected expenses.	High	sharon.cain@BMWGroup.com	Resolved	Mei.Ling@CCSpark.io	04/05/2024	26/05/2024	BMW Group	3	22
-                    The documentation for the delivered items is missing. Please provide it as soon as possible.	Medium	jeffrey.torres@AOKPlus.com	In Progress	Hunter.Stephens@CCSpark.io	29/05/2024	01/07/2024	AOK Plus	6	33
-                    We need a status update on our consulting project. There has been no communication for a while.	High	ian.singh@Bosch.com	In Progress	Sharon.Compton@CCSpark.io	13/06/2024	06/08/2024	Bosch	2	54
-                    The quantity of laptops delivered is incorrect. We ordered more than what was delivered.	Medium	jessica.lyons@Santander.com	Resolved	Sarah.Davis@CCSpark.io	06/09/2024	11/09/2024	Santander	1	5
-                    We need a review of the deliverables for our consulting project. Please schedule a meeting.	Low	karina.sanchez@Santander.com	In Progress	Daniel.Anderson@CCSpark.io	04/10/2024	16/10/2024	Santander	1	12
-                    The accessories we ordered have not been delivered yet. This delay is affecting our operations.	High	elaine.sharp@BMWGroup.com	In Progress	Matthew.Jackson@CCSpark.io	18/11/2024	21/11/2024	BMW Group	3	3
-                    We need a risk assessment for our consulting project. There are some potential issues that need to be addressed.	Medium	earl.mitchell@AOKPlus.com	Resolved	Joshua.Harris@CCSpark.io	20/12/2024	26/12/2024	AOK Plus	6	6
-                    Some items are missing from the delivered order. Please send the missing items as soon as possible.	Low	sharon.cain@BMWGroup.com	Resolved	Brandon.Hall@CCSpark.io	03/11/2023	01/01/2024	BMW Group	3	59
-                    We need to schedule a team meeting for our consulting project. There are some important issues to discuss.	High	jeffrey.torres@AOKPlus.com	Resolved	Christopher.Wright@CCSpark.io	08/12/2023	06/02/2024	AOK Plus	6	60
-                    The specifications of the delivered items are incorrect. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	Resolved	Justin.Baker@CCSpark.io	10/01/2024	11/03/2024	Bosch	2	61
-                    There is a delay in the deliverables for our consulting project. This needs to be addressed urgently.	High	jessica.lyons@Santander.com	New	Kevin.Perez@CCSpark.io	14/04/2024	18/04/2024	Santander	1	4
-                    The replacement items we requested have not been delivered yet. Please expedite the delivery.	Medium	karina.sanchez@Santander.com	New	Fatoumata.Diallo@CCSpark.io	17/05/2024	23/05/2024	Santander	1	6
-                    We need to request a change in the scope of our consulting project. The current scope is not feasible.	Low	elaine.sharp@BMWGroup.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	BMW Group	3	8
-                    The warranty information for the delivered items is missing. Please provide it as soon as possible.	High	earl.mitchell@AOKPlus.com	In Progress	Hunter.Stephens@CCSpark.io	01/08/2024	03/08/2024	AOK Plus	6	2
-                    We are facing a shortage of resources for our consulting project. Additional resources are needed.	Medium	sharon.cain@BMWGroup.com	Resolved	Sharon.Compton@CCSpark.io	17/08/2024	08/09/2024	BMW Group	3	22
-                    The billing for the delivered items is incorrect. Please correct the billing information.	Low	jeffrey.torres@AOKPlus.com	New	Sarah.Davis@CCSpark.io	07/10/2024	13/10/2024	AOK Plus	6	6
-                    There is a quality issue with the deliverables for our consulting project. This needs to be addressed immediately.	High	ian.singh@Bosch.com	In Progress	Daniel.Anderson@CCSpark.io	20/12/2024	26/12/2024	Bosch	2	6
-                    The software we ordered has not been delivered yet. This delay is affecting our project timeline.	Medium	jessica.lyons@Santander.com	Resolved	Matthew.Jackson@CCSpark.io	03/11/2023	01/01/2024	Santander	1	59
-                    Our consulting project is facing a budget overrun. We need to discuss budget adjustments.	High	karina.sanchez@Santander.com	Resolved	Joshua.Harris@CCSpark.io	20/12/2024	26/12/2024	Santander	1	6
-                    The user manuals for the delivered items are missing. Please provide them as soon as possible.	Low	elaine.sharp@BMWGroup.com	Resolved	Brandon.Hall@CCSpark.io	03/11/2023	01/01/2024	BMW Group	3	59
-                    We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	earl.mitchell@AOKPlus.com	In Progress	Christopher.Wright@CCSpark.io	08/12/2023	06/02/2024	AOK Plus	6	60
-                    The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	sharon.cain@BMWGroup.com	Resolved	Justin.Baker@CCSpark.io	10/01/2024	11/03/2024	BMW Group	3	61
-                    We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	jeffrey.torres@AOKPlus.com	Resolved	Kevin.Perez@CCSpark.io	14/04/2024	18/04/2024	AOK Plus	6	4
-                    The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	ian.singh@Bosch.com	Resolved	Fatoumata.Diallo@CCSpark.io	17/05/2024	23/05/2024	Bosch	2	6
-                    We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	Santander	1	8";
+            string csvData = @"1	Password reset request for user account	I can't access my account and need a password reset ASAP! This is affecting my work.	High	allen.trevino@Bosch.com	New	Fatoumata.Diallo@CCSpark.io	28/04/2024	30/04/2024	Bosch	2	2
+2	Unable to access VPN	VPN is down, and I can't work remotely. Fix this now! This is unacceptable.	Critical	brenda.sanchez@BMWGroup.com	InProgress	Mei.Ling@CCSpark.io	09/08/2024	21/08/2024	BMW Group	3	12
+3	Printer not working in office	The office printer is not working again. Please fix it as soon as possible.	Medium	patricia.lopez@BMWGroup.com	Resolved	Hunter.Stephens@CCSpark.io	01/01/2024	02/01/2024	BMW Group	3	1
+4	Software installation request	I need new software installed on my computer. It's for a project due next week.	Low	kimberly.medina@Bosch.com	New	Sharon.Compton@CCSpark.io	03/10/2024	06/10/2024	Bosch	2	3
+5	Email not syncing on mobile device	My email isn't syncing on my phone. This is urgent as I need to stay connected.	High	dorothy.bennett@Telefonica.com	New	Sarah.Davis@CCSpark.io	10/04/2024	14/04/2024	Telefonica	7	4
+6	Network connectivity issues	My new laptop hasn't arrived and I'm no longer able to do any work.	Critical	james.hansen@Bosch.com	New	Daniel.Anderson@CCSpark.io	16/10/2024	18/10/2024	Bosch	2	2
+7	Request for new hardware	I need a new laptop for my work. The current one is too slow.	Medium	brandon.myers@BMWGroup.com	Resolved	Matthew.Jackson@CCSpark.io	26/07/2024	03/08/2024	BMW Group	3	8
+8	Application crash report	The application keeps crashing. I need this fixed immediately as it's hindering my work.	High	evan.mercado@AudiAG.com	In Progress	Joshua.Harris@CCSpark.io	28/09/2024	30/09/2024	Audi AG	5	2
+9	Data backup request	Please back up my data. I have important files that need to be secured.	Low	sarah.solis@BMWGroup.com	In Progress	Brandon.Hall@CCSpark.io	02/08/2024	24/08/2024	BMW Group	3	22
+10	Security incident report	We've had a security breach. This needs immediate attention to prevent data loss.	Critical	charles.bauer@Bosch.com	Resolved	Christopher.Wright@CCSpark.io	24/01/2024	30/01/2024	Bosch	2	6
+11	User account locked out	My account is locked, and I can't log in. Please unlock it as soon as possible.	High	russell.marsh@Bosch.com	New	Justin.Baker@CCSpark.io	15/12/2023	18/12/2023	Bosch	2	3
+12	Request for software update	I need the latest software update installed. The current version is outdated.	Medium	corey.wilson@AudiAG.com	New	Kevin.Perez@CCSpark.io	09/10/2024	12/10/2024	Audi AG	5	3
+13	Email delivery failure	Emails are not being delivered. This is urgent as I am missing important communications.	High	melissa.hall@AudiAG.com	In Progress	Fatoumata.Diallo@CCSpark.io	22/07/2024	26/07/2024	Audi AG	5	4
+14	Slow internet connection	The internet is very slow. Please check and resolve this issue.	Medium	kathryn.nichols@BMWGroup.com	New	Mei.Ling@CCSpark.io	08/07/2024	11/07/2024	BMW Group	3	3
+15	Request for access to shared drive	I need access to the shared drive for team collaboration.	Low	elizabeth.grant@AudiAG.com	New	Hunter.Stephens@CCSpark.io	15/06/2024	24/06/2024	Audi AG	5	9
+16	Issue with video conferencing tool	The video conferencing tool isn't working. This is urgent as I have meetings scheduled.	High	amy.johnson@AudiAG.com	In Progress	Sharon.Compton@CCSpark.io	18/12/2023	12/02/2024	Audi AG	5	56
+17	Request for new email account	I need a new email account set up for a new employee.	Medium	steven.martin@AOKPlus.com	Resolved	Sarah.Davis@CCSpark.io	22/08/2024	26/08/2024	AOK Plus	6	4
+18	Software license renewal	Please renew my software license. It is about to expire.	Low	jennifer.martinez@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	26/10/2023	06/11/2023	AOK Plus	6	11
+19	Hardware malfunction report	My computer is malfunctioning. I need this fixed immediately to continue my work.	High	christopher.lee@AOKPlus.com	Resolved	Matthew.Jackson@CCSpark.io	05/06/2024	14/06/2024	AOK Plus	6	9
+20	Request for remote desktop access	I need remote desktop access set up to work from home.	Medium	margaret.moon@AudiAG.com	Resolved	Joshua.Harris@CCSpark.io	11/06/2023	15/06/2023	Audi AG	5	4
+21	Issue with file sharing service	The file sharing service isn't working. This is urgent as I need to share files with my team.	High	vanessa.smith@AudiAG.com	New	Brandon.Hall@CCSpark.io	12/09/2023	15/09/2023	Audi AG	5	3
+22	Request for additional storage space	I need more storage space for my projects.	Low	chloe.butler@BMWGroup.com	New	Christopher.Wright@CCSpark.io	01/06/2024	13/06/2024	BMW Group	3	12
+23	Network printer setup	Please set up the network printer. We need it for printing documents.	Medium	ryan.lawrence@Bosch.com	In Progress	Justin.Baker@CCSpark.io	24/01/2024	28/01/2024	Bosch	2	4
+24	Request for software training	I need training on the new software. Please schedule a session.	Low	michael.liu@Bosch.com	In Progress	Kevin.Perez@CCSpark.io	22/12/2023	17/01/2024	Bosch	2	26
+25	Issue with cloud service access	I can't access the cloud service. This is urgent as I need to retrieve files.	High	javier.wright@Telefonica.com	Resolved	Fatoumata.Diallo@CCSpark.io	23/11/2023	10/01/2024	Telefonica	7	48
+26	Request for new user account	Please create a new user account for a new team member.	Medium	jessica.lyons@Santander.com	New	Mei.Ling@CCSpark.io	04/09/2024	03/10/2024	Santander	1	29
+27	Email account compromised	My email account has been hacked. This needs immediate attention to secure my data.	Critical	karina.sanchez@Santander.com	Resolved	Hunter.Stephens@CCSpark.io	16/08/2023	08/09/2023	Santander	1	23
+28	Request for mobile device support	I need help with my mobile device. It isn't syncing with my work email.	High	elaine.sharp@BMWGroup.com	Resolved	Sharon.Compton@CCSpark.io	21/06/2024	06/08/2024	BMW Group	3	46
+29	Issue with database access	I can't access the database. Please fix this as I need to retrieve information.	Medium	earl.mitchell@AOKPlus.com	Resolved	Sarah.Davis@CCSpark.io	05/06/2023	07/06/2023	AOK Plus	6	2
+30	Request for VPN setup	Please set up VPN access for me. I need it for remote work.	Low	sharon.cain@BMWGroup.com	New	Daniel.Anderson@CCSpark.io	15/03/2023	20/03/2023	BMW Group	3	5
+31	Issue with software compatibility	The software isn't compatible with my system. This is urgent as I need it for my work.	High	jeffrey.torres@AOKPlus.com	Resolved	Matthew.Jackson@CCSpark.io	24/07/2024	24/07/2024	AOK Plus	6	0
+32	Request for network configuration	Please configure the network settings. We are experiencing connectivity issues.	Medium	ian.singh@Bosch.com	Resolved	Joshua.Harris@CCSpark.io	19/03/2024	25/03/2024	Bosch	2	6
+33	Issue with remote access	Remote access isn't working. This is urgent as I need to access my work files.	High	jessica.lyons@Santander.com	New	Brandon.Hall@CCSpark.io	23/11/2024	24/11/2024	Santander	1	1
+34	Request for data recovery	I need data recovery services. I accidentally deleted important files.	Low	karina.sanchez@Santander.com	Resolved	Christopher.Wright@CCSpark.io	16/09/2024	20/09/2024	Santander	1	4
+35	Issue with email attachments	I can't open my email attachements again. This is the third time this month that the Outlook app is crashing and preventing me from work,. This is super annoying!!! 	Medium	elaine.sharp@BMWGroup.com	New	Justin.Baker@CCSpark.io	15/04/2024	18/04/2024	BMW Group	3	3
+36	Consulting project support request	We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	earl.mitchell@AOKPlus.com	In Progress	Kevin.Perez@CCSpark.io	22/10/2024	29/10/2024	AOK Plus	6	7
+37	Delayed delivery of ordered laptops	The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	sharon.cain@BMWGroup.com	In Progress	Fatoumata.Diallo@CCSpark.io	27/05/2024	05/06/2024	BMW Group	3	9
+38	Consulting project milestone review	We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	jeffrey.torres@AOKPlus.com	New	Mei.Ling@CCSpark.io	09/11/2024	17/11/2024	AOK Plus	6	8
+39	Missing accessories with delivered laptops	The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	ian.singh@Bosch.com	In Progress	Hunter.Stephens@CCSpark.io	13/11/2024	23/11/2024	Bosch	2	10
+40	Consulting project scope clarification	We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Sharon.Compton@CCSpark.io	26/08/2023	06/09/2023	Santander	1	11
+41	Incorrect laptop models delivered	The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	karina.sanchez@Santander.com	Resolved	Sarah.Davis@CCSpark.io	06/07/2024	18/07/2024	Santander	1	12
+42	Consulting project resource allocation	We need additional resources allocated to our consulting project. The current team is insufficient.	Medium	elaine.sharp@BMWGroup.com	In Progress	Daniel.Anderson@CCSpark.io	18/07/2024	31/07/2024	BMW Group	3	13
+43	Delayed delivery of project materials	The materials for our consulting project have not been delivered yet. This delay is causing significant issues.	High	earl.mitchell@AOKPlus.com	In Progress	Matthew.Jackson@CCSpark.io	30/08/2024	13/09/2024	AOK Plus	6	14
+44	Consulting project timeline extension	We need an extension on the timeline for our consulting project. The current deadline is not feasible.	Low	sharon.cain@BMWGroup.com	New	Joshua.Harris@CCSpark.io	16/09/2023	01/10/2023	BMW Group	3	15
+45	Damaged laptops upon delivery	The laptops delivered are damaged. This is unacceptable and needs to be resolved immediately.	Critical	jeffrey.torres@AOKPlus.com	Resolved	Brandon.Hall@CCSpark.io	09/06/2024	25/06/2024	AOK Plus	6	16
+46	Consulting project budget adjustment	We need to adjust the budget for our consulting project. There have been some unexpected expenses.	High	ian.singh@Bosch.com	In Progress	Christopher.Wright@CCSpark.io	20/05/2024	22/05/2024	Bosch	2	2
+47	Missing documentation for delivered items	The documentation for the delivered items is missing. Please provide it as soon as possible.	Medium	jessica.lyons@Santander.com	Resolved	Justin.Baker@CCSpark.io	14/11/2023	02/12/2023	Santander	1	18
+48	Consulting project status update	We need a status update on our consulting project. There has been no communication for a while.	High	karina.sanchez@Santander.com	Resolved	Kevin.Perez@CCSpark.io	26/12/2024	30/12/2024	Santander	1	4
+49	Incorrect quantity of laptops delivered	The quantity of laptops delivered is incorrect. We ordered more than what was delivered.	Medium	elaine.sharp@BMWGroup.com	Resolved	Fatoumata.Diallo@CCSpark.io	24/08/2024	30/08/2024	BMW Group	3	6
+50	Consulting project deliverable review	We need a review of the deliverables for our consulting project. Please schedule a meeting.	Low	earl.mitchell@AOKPlus.com	In Progress	Mei.Ling@CCSpark.io	23/08/2024	31/08/2024	AOK Plus	6	8
+51	Delayed delivery of ordered accessories	The accessories we ordered have not been delivered yet. This delay is affecting our operations.	High	jessica.lyons@Santander.com	In Progress	Fatoumata.Diallo@CCSpark.io	30/12/2023	01/01/2024	Santander	1	2
+52	Consulting project risk assessment	We need a risk assessment for our consulting project. There are some potential issues that need to be addressed.	Medium	karina.sanchez@Santander.com	Resolved	Mei.Ling@CCSpark.io	22/02/2024	15/03/2024	Santander	1	22
+53	Missing items in delivered order	Some items are missing from the delivered order. Please send the missing items as soon as possible.	Low	elaine.sharp@BMWGroup.com	In Progress	Hunter.Stephens@CCSpark.io	26/03/2024	01/04/2024	BMW Group	3	6
+54	Consulting project team meeting request	We need to schedule a team meeting for our consulting project. There are some important issues to discuss.	High	earl.mitchell@AOKPlus.com	Resolved	Sharon.Compton@CCSpark.io	02/05/2024	05/05/2024	AOK Plus	6	3
+55	Incorrect specifications of delivered items	The specifications of the delivered items are incorrect. This needs to be corrected immediately.	Critical	sharon.cain@BMWGroup.com	Resolved	Sarah.Davis@CCSpark.io	07/06/2024	10/06/2024	BMW Group	3	3
+56	Consulting project deliverable delay	There is a delay in the deliverables for our consulting project. This needs to be addressed urgently.	High	jeffrey.torres@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	11/07/2024	15/07/2024	AOK Plus	6	4
+57	Delayed delivery of replacement items	The replacement items we requested have not been delivered yet. Please expedite the delivery.	Medium	ian.singh@Bosch.com	New	Matthew.Jackson@CCSpark.io	18/08/2024	20/08/2024	Bosch	2	2
+58	Consulting project scope change request	We need to request a change in the scope of our consulting project. The current scope is not feasible.	Low	jessica.lyons@Santander.com	Resolved	Joshua.Harris@CCSpark.io	24/08/2024	25/09/2024	Santander	1	32
+59	Missing warranty information for delivered items	The warranty information for the delivered items is missing. Please provide it as soon as possible.	High	karina.sanchez@Santander.com	Resolved	Brandon.Hall@CCSpark.io	29/10/2024	30/10/2024	Santander	1	1
+60	Consulting project resource shortage	We are facing a shortage of resources for our consulting project. Additional resources are needed.	Medium	elaine.sharp@BMWGroup.com	New	Christopher.Wright@CCSpark.io	31/10/2024	04/12/2024	BMW Group	3	34
+61	Incorrect billing for delivered items	The billing for the delivered items is incorrect. Please correct the billing information.	Low	earl.mitchell@AOKPlus.com	Resolved	Justin.Baker@CCSpark.io	18/12/2023	09/01/2024	AOK Plus	6	22
+62	Consulting project deliverable quality issue	There is a quality issue with the deliverables for our consulting project. This needs to be addressed immediately.	High	sharon.cain@BMWGroup.com	New	Kevin.Perez@CCSpark.io	09/01/2024	14/02/2024	BMW Group	3	36
+63	Delayed delivery of ordered software	The software we ordered has not been delivered yet. This delay is affecting our project timeline.	Medium	jeffrey.torres@AOKPlus.com	In Progress	Fatoumata.Diallo@CCSpark.io	11/02/2024	19/03/2024	AOK Plus	6	37
+64	Consulting project budget overrun	Our consulting project is facing a budget overrun. We need to discuss budget adjustments.	High	ian.singh@Bosch.com	In Progress	Mei.Ling@CCSpark.io	19/03/2024	21/03/2024	Bosch	2	2
+65	Missing user manuals for delivered items	The user manuals for the delivered items are missing. Please provide them as soon as possible.	Low	jessica.lyons@Santander.com	New	Hunter.Stephens@CCSpark.io	21/04/2024	30/05/2024	Santander	1	39
+66	Consulting project support request	We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	karina.sanchez@Santander.com	In Progress	Sharon.Compton@CCSpark.io	25/05/2024	04/07/2024	Santander	1	40
+67	Delayed delivery of ordered laptops	The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	elaine.sharp@BMWGroup.com	In Progress	Sarah.Davis@CCSpark.io	05/08/2024	09/08/2024	BMW Group	3	4
+68	Consulting project milestone review	We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	earl.mitchell@AOKPlus.com	Resolved	Daniel.Anderson@CCSpark.io	08/09/2024	14/09/2024	AOK Plus	6	6
+69	Missing accessories with delivered laptops	The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	sharon.cain@BMWGroup.com	In Progress	Matthew.Jackson@CCSpark.io	11/10/2024	19/10/2024	BMW Group	3	8
+70	Consulting project scope clarification	We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jeffrey.torres@AOKPlus.com	In Progress	Joshua.Harris@CCSpark.io	22/11/2024	24/11/2024	AOK Plus	6	2
+71	Incorrect laptop models delivered	The laptops delivered are not the models we ordered. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	New	Brandon.Hall@CCSpark.io	07/12/2024	29/12/2024	Bosch	2	22
+72	Consulting project resource allocation	We need additional resources allocated to our consulting project. The current team is insufficient.	Medium	jessica.lyons@Santander.com	Resolved	Christopher.Wright@CCSpark.io	29/12/2023	04/01/2024	Santander	1	6
+73	Delayed delivery of project materials	The materials for our consulting project have not been delivered yet. This delay is causing significant issues.	High	karina.sanchez@Santander.com	In Progress	Justin.Baker@CCSpark.io	13/11/2023	09/02/2024	Santander	1	88
+74	Consulting project timeline extension	We need an extension on the timeline for our consulting project. The current deadline is not feasible.	Low	elaine.sharp@BMWGroup.com	Resolved	Kevin.Perez@CCSpark.io	11/03/2024	14/03/2024	BMW Group	3	3
+75	Damaged laptops upon delivery	The laptops delivered are damaged. This is unacceptable and needs to be resolved immediately.	Critical	earl.mitchell@AOKPlus.com	Resolved	Fatoumata.Diallo@CCSpark.io	17/04/2024	21/04/2024	AOK Plus	6	4
+76	Consulting project budget adjustment	We need to adjust the budget for our consulting project. There have been some unexpected expenses.	High	sharon.cain@BMWGroup.com	Resolved	Mei.Ling@CCSpark.io	04/05/2024	26/05/2024	BMW Group	3	22
+77	Missing documentation for delivered items	The documentation for the delivered items is missing. Please provide it as soon as possible.	Medium	jeffrey.torres@AOKPlus.com	In Progress	Hunter.Stephens@CCSpark.io	29/05/2024	01/07/2024	AOK Plus	6	33
+78	Consulting project status update	We need a status update on our consulting project. There has been no communication for a while.	High	ian.singh@Bosch.com	In Progress	Sharon.Compton@CCSpark.io	06/06/2024	07/06/2024	Bosch	2	1
+79	Incorrect quantity of laptops delivered	The quantity of laptops delivered is incorrect. We ordered more than what was delivered.	Medium	jessica.lyons@Santander.com	Resolved	Sarah.Davis@CCSpark.io	06/09/2024	11/09/2024	Santander	1	5
+80	Consulting project deliverable review	We need a review of the deliverables for our consulting project. Please schedule a meeting.	Low	karina.sanchez@Santander.com	In Progress	Daniel.Anderson@CCSpark.io	04/10/2024	16/10/2024	Santander	1	12
+81	Delayed delivery of ordered accessories	The accessories we ordered have not been delivered yet. This delay is affecting our operations.	High	elaine.sharp@BMWGroup.com	In Progress	Matthew.Jackson@CCSpark.io	18/11/2024	21/11/2024	BMW Group	3	3
+82	Consulting project risk assessment	We need a risk assessment for our consulting project. There are some potential issues that need to be addressed.	Medium	earl.mitchell@AOKPlus.com	Resolved	Joshua.Harris@CCSpark.io	20/12/2024	26/12/2024	AOK Plus	6	6
+83	Missing items in delivered order	Some items are missing from the delivered order. Please send the missing items as soon as possible.	Low	sharon.cain@BMWGroup.com	Resolved	Brandon.Hall@CCSpark.io	03/11/2023	01/01/2024	BMW Group	3	59
+84	Consulting project team meeting request	We need to schedule a team meeting for our consulting project. There are some important issues to discuss.	High	jeffrey.torres@AOKPlus.com	Resolved	Christopher.Wright@CCSpark.io	08/12/2023	06/02/2024	AOK Plus	6	60
+85	Incorrect specifications of delivered items	The specifications of the delivered items are incorrect. This needs to be corrected immediately.	Critical	ian.singh@Bosch.com	Resolved	Justin.Baker@CCSpark.io	10/01/2024	11/03/2024	Bosch	2	61
+86	Consulting project deliverable delay	There is a delay in the deliverables for our consulting project. This needs to be addressed urgently.	High	jessica.lyons@Santander.com	New	Kevin.Perez@CCSpark.io	14/04/2024	18/04/2024	Santander	1	4
+87	Delayed delivery of replacement items	The replacement items we requested have not been delivered yet. Please expedite the delivery.	Medium	karina.sanchez@Santander.com	New	Fatoumata.Diallo@CCSpark.io	17/05/2024	23/05/2024	Santander	1	6
+88	Consulting project scope change request	We need to request a change in the scope of our consulting project. The current scope is not feasible.	Low	elaine.sharp@BMWGroup.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	BMW Group	3	8
+89	Missing warranty information for delivered items	The warranty information for the delivered items is missing. Please provide it as soon as possible.	High	earl.mitchell@AOKPlus.com	In Progress	Hunter.Stephens@CCSpark.io	01/08/2024	03/08/2024	AOK Plus	6	2
+90	Consulting project resource shortage	We are facing a shortage of resources for our consulting project. Additional resources are needed.	Medium	sharon.cain@BMWGroup.com	Resolved	Sharon.Compton@CCSpark.io	17/08/2024	08/09/2024	BMW Group	3	22
+91	Incorrect billing for delivered items	The billing for the delivered items is incorrect. Please correct the billing information.	Low	jeffrey.torres@AOKPlus.com	New	Sarah.Davis@CCSpark.io	07/10/2024	13/10/2024	AOK Plus	6	6
+92	Consulting project deliverable quality issue	There is a quality issue with the deliverables for our consulting project. This needs to be addressed immediately.	High	ian.singh@Bosch.com	In Progress	Daniel.Anderson@CCSpark.io	20/12/2024	26/12/2024	Bosch	2	6
+93	Delayed delivery of ordered software	The software we ordered has not been delivered yet. This delay is affecting our project timeline.	Medium	jessica.lyons@Santander.com	Resolved	Matthew.Jackson@CCSpark.io	03/11/2023	01/01/2024	Santander	1	59
+94	Consulting project budget overrun	Our consulting project is facing a budget overrun. We need to discuss budget adjustments.	High	karina.sanchez@Santander.com	Resolved	Joshua.Harris@CCSpark.io	20/12/2024	26/12/2024	Santander	1	6
+95	Missing user manuals for delivered items	The user manuals for the delivered items are missing. Please provide them as soon as possible.	Low	elaine.sharp@BMWGroup.com	Resolved	Brandon.Hall@CCSpark.io	03/11/2023	01/01/2024	BMW Group	3	59
+96	Consulting project support request	We need urgent support for our ongoing consulting project. The deadline is approaching, and we are facing several issues.	High	earl.mitchell@AOKPlus.com	In Progress	Christopher.Wright@CCSpark.io	08/12/2023	06/02/2024	AOK Plus	6	60
+97	Delayed delivery of ordered laptops	The laptops we ordered have not been delivered yet. This delay is unacceptable and affecting our operations.	Critical	sharon.cain@BMWGroup.com	Resolved	Justin.Baker@CCSpark.io	10/01/2024	11/03/2024	BMW Group	3	61
+98	Consulting project milestone review	We need a review of the milestones for our consulting project. Please schedule a meeting.	Medium	jeffrey.torres@AOKPlus.com	Resolved	Kevin.Perez@CCSpark.io	14/04/2024	18/04/2024	AOK Plus	6	4
+99	Missing accessories with delivered laptops	The laptops were delivered without the necessary accessories. Please send them as soon as possible.	Low	ian.singh@Bosch.com	Resolved	Fatoumata.Diallo@CCSpark.io	17/05/2024	23/05/2024	Bosch	2	6
+100	Consulting project scope clarification	We need clarification on the scope of the consulting project. There are some ambiguities that need to be addressed.	High	jessica.lyons@Santander.com	In Progress	Mei.Ling@CCSpark.io	20/06/2024	28/06/2024	Santander	1	8
+";
 
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Ticket> tickets = new List<Ticket>();
@@ -164,17 +165,17 @@ namespace groveale.Data
                 {
                     Ticket ticket = new Ticket
                     {
-                        Short_Description = string.Empty,
-                        Long_Description = values[0].Trim(),
-                        Priority = values[1],
-                        CallerID = values[2],
-                        State = values[3],
-                        AssignedTo = values[4],
-                        Opened_at = DateTime.ParseExact(values[5], "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        Closed_at = DateTime.ParseExact(values[6], "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                        CompanyName = values[7],
-                        CompanyID = int.Parse(values[8]),
-                        DaysOpen = int.Parse(values[9]),
+                        Short_Description = values[1].Trim(),
+                        Long_Description = values[2].Trim(),
+                        Priority = values[3],
+                        CallerID = values[4],
+                        State = values[5],
+                        AssignedTo = values[6],
+                        Opened_at = DateTime.ParseExact(values[7], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        Closed_at = DateTime.ParseExact(values[8], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        CompanyName = values[9],
+                        CompanyID = int.Parse(values[10]),
+                        DaysOpen = int.Parse(values[11]),
                     };
                     tickets.Add(ticket);
                 }
