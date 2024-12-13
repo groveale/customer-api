@@ -1,0 +1,283 @@
+openapi: '3.0.2'
+info:
+  title: Account Management API
+  version: '1.0'
+  description: API for managing data relating to accounts, including opportunities, tickets, orders and invoices.
+
+servers:
+  - url: https://ag-customer-api.azurewebsites.net/  # Replace with your actual server URL
+
+paths:
+  /opportunities/parentAccount/{parentAccountName}:
+    get:
+      summary: Get opportunities by parent account name
+      operationId: GetOpportunitiesByParentAccountName
+      description: Retrieve a list of opportunities filtered by the parent account name.
+      tags:
+        - Opportunity
+      parameters:
+        - name: parentAccountName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+  /opportunities/{id}:
+    get:
+      summary: Get a specific opportunity by ID
+      operationId: GetOpportunityById
+      description: Retrieve opportunity details by opportunity ID.
+      tags:
+        - Opportunity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+        '404':
+          description: Opportunity not found
+  /invoices/parentCustomer/{parentCustomerName}:
+    get:
+      summary: Get invoices by parent customer name
+      operationId: GetInvoicesByParentCustomerName
+      description: Retrieve a list of invoices filtered by the parent customer name.
+      tags:
+        - Invoice
+      parameters:
+        - name: parentCustomerName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with invoices for the parent customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+  /invoices/{id}:
+    get:
+      summary: Get invoice by ID
+      operationId: GetInvoiceById
+      description: Retrieve invoice details by invoice ID.
+      tags:
+        - Invoice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response with invoice details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Invoice not found
+  /orders/parentCustomer/{parentCustomerName}:
+    get:
+      summary: Get orders by parent customer name
+      operationId: GetOrdersByParentCustomerName
+      description: Retrieve a list of orders filtered by the parent customer name.
+      tags:
+        - Order
+      parameters:
+        - name: parentCustomerName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '404':
+          description: Orders not found for the specified parent customer name
+  /tickets/customer/{customerName}:
+    get:
+      summary: Get tickets by customer name
+      operationId: GetTicketsByCustomerName
+      description: Retrieve a list of tickets filtered by the customer name.
+      tags:
+        - Ticket
+      parameters:
+        - name: customerName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with tickets for the customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+components:
+  schemas:
+    Invoice:
+      type: object
+      properties:
+        SalesDocNumber:
+          type: string
+        InvoiceNumber:
+          type: string
+        ParentCustomerID:
+          type: integer
+        ParentCustomer:
+          type: string
+        LocalCustomerID:
+          type: string
+        LocalCustomer:
+          type: string
+        InvoiceDate:
+          type: string
+          format: date
+        PaymentDate:
+          type: string
+          format: date
+          nullable: true
+        Currency:
+          type: string
+        TotalAmount:
+          type: number
+          format: decimal
+    Opportunity:
+      type: object
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        ParentAccountId:
+          type: integer
+        ParentAccount:
+          type: string
+        OpportunityID:
+          type: string
+        Account:
+          type: string
+        Territory:
+          type: string
+        Region:
+          type: string
+        ServiceLine:
+          type: string
+        Probability:
+          type: number
+          format: float
+        StageName:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        Currency:
+          type: string
+        Owner:
+          type: string
+        DateCreated:
+          type: string
+          format: date
+        CloseDate:
+          type: string
+          format: date
+    Order:
+      type: object
+      properties:
+        OrderID:
+          type: string
+        SalesDocType:
+          type: string
+        SalesOrganisation:
+          type: string
+        DistributionChannel:
+          type: string
+        ParentCustomerID:
+          type: integer
+        ParentCustomer:
+          type: string
+        LocalCustomerID:
+          type: string
+        LocalCustomer:
+          type: string
+        DateCreated:
+          type: string
+          format: date
+        CreatedBy:
+          type: string
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the ticket
+        state:
+          type: string
+          description: Current state of the ticket
+        priority:
+          type: string
+          description: Priority level of the ticket
+        long_Description:
+          type: string
+          description: Detailed description of the ticket
+        assignedTo:
+          type: string
+          description: Name of the person assigned to the ticket
+        opened_at:
+          type: string
+          format: date-time
+          description: Date and time the ticket was opened
+        closed_at:
+          type: string
+          format: date-time
+          description: Date and time the ticket was closed
+        companyID:
+          type: integer
+          description: Unique identifier of the company
+        daysOpen:
+          type: integer
+          description: Number of days the ticket has been open
+        callerID:
+          type: integer
+          description: Unique identifier of the ticket caller
+        companyName:
+          type: string
+          description: Name of the company associated with the ticket
+        short_Description:
+          type: string
+          description: Brief description of the ticket
+      required:
+        - id
+        - state
+        - companyName
+        - short_Description
+  
