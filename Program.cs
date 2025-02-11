@@ -27,6 +27,7 @@ builder.Services.AddDbContext<OpportunityDb>(opt => opt.UseInMemoryDatabase("Opp
 builder.Services.AddDbContext<CustomerDb>(opt => opt.UseInMemoryDatabase("CustomerList"));
 builder.Services.AddDbContext<OrderHeaderDb>(opt => opt.UseInMemoryDatabase("OrderHeaderList"));
 builder.Services.AddDbContext<InvoiceDb>(opt => opt.UseInMemoryDatabase("InvoiceList"));
+builder.Services.AddDbContext<ProductDb>(opt => opt.UseInMemoryDatabase("ProductList"));
 
 
 
@@ -65,5 +66,6 @@ app.MapOrderEndpoints();
 app.MapOrderHeaderEndpoints();
     
 app.MapInvoiceEndpoints();
+app.MapProductEndpoints();
 
 app.Run();
