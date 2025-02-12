@@ -1,0 +1,159 @@
+openapi: '3.0.2'
+info:
+  title: Product Management API
+  version: '1.0'
+  description: API for managing product data
+
+servers:
+  - url: https://ag-customer-api.azurewebsites.net/ # Replace with your actual server URL
+
+paths:
+  /product/{sku}:
+    get: 
+      summary: Get a product by SKU
+      operationId: GetProductBySKU
+      description: Retrieve a product by its SKU.
+      tags:
+        - Product
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+  /product/{sku}/damage/{damageCount}:
+    get:
+      summary: Update product damage count
+      operationId: UpdateProductDamageCount
+      description: Update the damage count for a product.
+      tags:
+        - Product
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: damageCount
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Damage count successfully updated
+        '404':
+          description: Product not found
+  /product/high/damage:
+    get:
+      summary: Get products with highest damage
+      operationId: GetHighDamageProducts
+      description: Retrieve the top 5 products with the highest damage count in the last 30 days.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/high/theft:
+    get:
+      summary: Get products with highest theft
+      operationId: GetHighTheftProducts
+      description: Retrieve the top 5 products with the highest theft count in the last 30 days.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/eol/fresh:
+    get:
+      summary: Get fresh products nearing end of life
+      operationId: GetNearingEndOfLifeFreshProducts
+      description: Retrieve fresh products with 7 or fewer days until end of life.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/eol/shelf:
+    get:
+      summary: Get shelf products nearing end of life
+      operationId: GetNearingEndOfLifeShelfProducts
+      description: Retrieve shelf products with 30 or fewer days until end of life.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        Id:
+          type: integer
+        SKU:
+          type: string
+        Name:
+          type: string
+        Sold:
+          type: integer
+        InStock:
+          type: integer
+        Stolen:
+          type: integer
+        Damaged:
+          type: integer
+        EoLDays:
+          type: integer
+        CostPrice:
+          type: number
+          format: decimal
+        SoldPrice:
+          type: number
+          format: decimal
+        StoreNumber:
+          type: integer
+        Type:
+          type: string
+      required:
+        - Id
+        - SKU
+        - Name
+        - Type

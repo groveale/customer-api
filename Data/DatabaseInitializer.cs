@@ -47,55 +47,55 @@ namespace groveale.Data
 
         private static void SeedProducts(ProductDb context)
         {
-            string csvData = @"Weetabix	97180	446	35	9	1	211	5	18.1	815	Shelf
-Lemon Pie	59074	485	196	8	1	17	5.1	17.5	815	Fresh
-Coca Cola	98754	375	170	7	1	264	8.9	12.7	815	Shelf
-Walkers Crisps	51374	493	20	6	2	148	6.6	28.9	815	Shelf
-Heinz Beans	55285	229	100	7	1	251	9	24	815	Shelf
-Kellogg's Cornflakes	42141	453	20	3	1	269	16.2	26.6	815	Shelf
-Pepsi	51714	70	194	5	3	337	5.3	11.1	815	Shelf
-Nutella	71888	115	45	7	2	265	17.9	24.5	815	Shelf
-Cadbury Dairy Milk	40639	250	29	6	1	56	19.2	19.4	815	Shelf
-Yeo Valley Yogurt	12918	314	85	7	3	15	15.4	24.9	815	Fresh
-Milk	28723	54	178	1	0	2	8.6	29.1	815	Fresh
-Eggs	46825	179	132	7	2	15	15.1	12.8	815	Fresh
-Butter	42114	261	180	9	2	2	17.4	12.9	815	Fresh
-Cheese	11463	357	133	0	4	7	17.3	13.1	815	Fresh
-Lettuce	79132	217	123	2	0	11	10.7	28.1	815	Fresh
-Tomatoes	28152	287	50	5	0	10	5.3	18.7	815	Fresh
-Chicken	54622	463	128	9	1	2	18.4	16.1	815	Fresh
-Salmon	54044	409	133	1	3	1	10.2	17.1	815	Fresh
-Grapes	44037	204	47	0	4	18	11.4	18.8	815	Fresh
-Oranges	22512	463	149	7	3	1	16.6	18.5	815	Fresh
-Apples	84161	142	133	7	1	7	5.5	14.2	815	Fresh
-Pasta	75276	311	153	0	2	276	15	27.1	815	Shelf
-Rice	39730	101	131	5	2	171	9.9	19.1	815	Shelf
-Olive Oil	70450	367	182	8	3	104	11	13.9	815	Shelf
-Salt	91832	436	194	5	2	62	10.1	12	815	Shelf
-Pepper	87288	108	146	9	3	62	11.6	19.8	815	Shelf
-Sugar	30020	485	89	6	3	4	6	26.1	815	Shelf
-Tea	62428	69	126	2	4	110	15.4	24.3	815	Shelf
-Coffee	37002	60	152	7	4	92	12.5	11	815	Shelf
-Jam	85906	259	170	8	1	343	19.3	28.7	815	Shelf
-Honey	60537	452	94	9	3	330	10.4	24	815	Shelf
-Mustard	82384	353	53	6	0	96	12.2	18.6	815	Shelf
-Ketchup	21783	325	160	4	4	89	11.6	24.8	815	Shelf
-Mayonnaise	96797	104	124	7	3	12	9.3	20.5	815	Shelf
-Biscuits	84132	431	120	5	2	302	6.7	23	815	Shelf
-Chocolate Bar	34214	128	65	2	1	109	5.7	10.3	815	Shelf
-Cereal	18804	80	99	2	2	141	19.7	27	815	Shelf
-Marmite	62076	348	93	2	0	114	15	19.2	815	Shelf
-Tinned Tuna	53914	425	79	8	1	7	11.8	11	815	Shelf
-Coconut Milk	34971	247	32	7	2	236	11	21.6	815	Shelf
-Butter Beans	19549	96	64	1	1	152	10.9	13.8	815	Shelf
-Flour	70712	215	127	4	0	180	18	11.4	815	Shelf
-Soup	87229	463	108	8	2	97	15.7	11.9	815	Shelf
-Frozen Peas	35345	477	76	2	3	298	15.5	19.5	815	Shelf
-Ice Cream	88481	298	77	4	2	300	17.4	15.7	815	Shelf
-Frozen Pizza	45969	383	23	7	0	108	11.5	25.4	815	Shelf
-Yogurt	72779	150	192	2	0	13	7.8	27.6	815	Fresh
-Orange Juice	96538	66	135	9	1	11	8	24.9	815	Fresh
-Butter Milk	48654	449	181	5	4	9	8.8	29.8	815	Fresh
+            string csvData = @"Weetabix 24 per pack	97180	446	35	9	1	211	1.25	3.3	815	Shelf
+Lemon Meringue Pie	59074	485	196	8	25	17	3.45	7.85	815	Fresh
+Coca Cola (12 x 150ml)	98754	375	170	7	1	264	1	6.4	815	Shelf
+Walkers Crisps Ready Salted Multipack x12	51374	493	20	6	2	148	0.25	3	815	Shelf
+Heinz Beans 6x 415g	55285	229	100	7	1	24	0.75	5.25	815	Shelf
+Kellogg's Cornflakes 250g	42141	453	20	3	1	269	0.3	3	815	Shelf
+Pepsi Max 2L	51714	70	194	5	3	337	0.4	2	815	Shelf
+Nutella 200g	71888	115	45	7	2	265	0.35	2.35	815	Shelf
+Cadbury Dairy Milk Bar 180g	40639	250	29	6	1	56	0.5	2.75	815	Shelf
+Yeo Valley Yogurt Natural 450g	12918	314	85	7	3	15	0.24	2	815	Fresh
+Semi Skimmed Milk 4 Pints	28723	54	178	1	0	2	0.17	1.45	815	Fresh
+Clarence Court Mixed Free Range Eggs x10	46825	179	132	7	2	15	0.9	4.65	815	Fresh
+British Salted Butter 250g	42114	261	180	9	2	2	0.33	2	815	Fresh
+Pilgrims Choice Mature Cheddar Cheese 350g	11463	357	133	0	4	7	1	4.2	815	Fresh
+Little Gem Lettuce 2 pack	79132	217	123	2	0	29	0.11	0.95	815	Fresh
+Baby Plum Tomatoes 300g	28152	287	50	5	0	10	0.23	1	815	Fresh
+Chicken Breast Fillets 400g	54622	463	128	9	1	2	1.97	3.89	815	Fresh
+Salmon Fillets 220g	54044	409	133	1	3	1	2	4.9	815	Fresh
+Mixed Seedless Grapes x 500g	44037	204	47	0	4	18	0.45	2	815	Fresh
+Seedless Oranges 4 per pack	22512	463	149	7	3	1	0.78	2.5	815	Fresh
+Pink Lady Apples 4 per pack	84161	142	133	7	1	7	0.77	2.75	815	Fresh
+Fusilli Pasta 500g	75276	311	153	0	2	276	0.1	0.75	815	Shelf
+Basmati Rice 500g	39730	101	131	5	2	171	0.09	1.05	815	Shelf
+Extra Virgin Olive Oil 500ml	70450	367	182	8	3	104	3.03	5.85	815	Shelf
+Maldron Sea Salt Tub 570g	91832	436	194	5	2	62	2.09	5.7	815	Shelf
+Black Peppercorns Jar 35g	87288	108	146	9	3	62	0.44	2.5	815	Shelf
+Granulated Sugar 500g	30020	485	89	6	3	4	0.17	0.95	815	Shelf
+Yorkshire Tea Bags 240 per pack	62428	69	126	2	4	110	0.43	7	815	Shelf
+Nescafe Gold Instant Coffee 200g	37002	60	152	7	4	92	2.02	6.71	815	Shelf
+Strawberry Jam 454g	85906	259	170	8	1	343	0.21	1	815	Shelf
+Runny Honey 340g	60537	452	94	9	3	330	0.1	1.1	815	Shelf
+Colmans Original English Mustard 100g	82384	353	53	6	0	96	0.11	1.7	815	Shelf
+Heinz Tomato Ketchup 910g	21783	325	160	4	4	89	1.02	4	815	Shelf
+Hellmann's Real Squeezy Mayonnaise 430ml	96797	104	124	7	3	12	0.58	2.5	815	Shelf
+Gingernut Biscuits 250g	84132	431	120	5	2	302	0.09	1.6	815	Shelf
+Milkybar White Chocolate Bars 6x12g	34214	128	65	2	1	109	0.32	1.3	815	Shelf
+Nestle Shreddies 1100g	18804	80	99	2	2	141	0.3	4.4	815	Shelf
+Marmite Original 250g	62076	348	93	2	0	114	0.65	3	815	Shelf
+Tinned Tuna in Spring Water 4x200g	53914	425	79	8	1	7	2.43	7	815	Shelf
+Coconut Milk 400g	34971	247	32	7	2	236	0.22	1.24	815	Shelf
+Butter Beans 400g	19549	96	64	1	1	152	0.21	1.05	815	Shelf
+Self Raising Flour 1kg 	70712	215	127	4	0	180	0.03	0.95	815	Shelf
+Heinz Cream of Tomato Soup 400g	87229	463	108	8	2	97	0.05	1.7	815	Shelf
+Frozen Peas 1.2kg	35345	477	76	2	3	298	0.6	3.25	815	Shelf
+Vanilla Ice Cream 2L	88481	298	77	4	2	300	0.99	4.5	815	Shelf
+Frozen Pepperoni Pizza	45969	383	23	7	0	108	0.78	3.5	815	Shelf
+Greek Style Yogurt 500g	72779	150	192	2	0	13	0.44	1.2	815	Fresh
+Freshly Squeezed Orange Juice 1L	96538	66	135	9	1	11	0.35	3.5	815	Fresh
+Butter Milk 568ml	48654	449	181	5	4	9	0.22	1	815	Fresh
 ";
             string[] lines = csvData.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<Product> products = new List<Product>();

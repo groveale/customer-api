@@ -1,0 +1,185 @@
+openapi: '3.0.2'
+info:
+  title: Product Management API
+  version: '1.0'
+  description: API for managing product data, including inventory, damage tracking, and end-of-life products.
+
+servers:
+  - url: https://your-api-server.com  # Replace with your actual server URL
+
+paths:
+  /product/store/{storeNumber}:
+    get:
+      summary: Get products by store number
+      operationId: GetProductsByStoreNumber
+      description: Retrieve a list of products filtered by store number.
+      tags:
+        - Product
+      parameters:
+        - name: storeNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/{sku}:
+    put:
+      summary: Update a product
+      operationId: UpdateProduct
+      description: Update an existing product's information.
+      tags:
+        - Product
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9]{5}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '204':
+          description: Product successfully updated
+        '404':
+          description: Product not found
+
+  /product/high/damage:
+    get:
+      summary: Get products with highest damage
+      operationId: GetHighDamageProducts
+      description: Retrieve the top 5 products with the highest damage count in the last 30 days.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/high/theft:
+    get:
+      summary: Get products with highest theft
+      operationId: GetHighTheftProducts
+      description: Retrieve the top 5 products with the highest theft count in the last 30 days.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/eol/fresh:
+    get:
+      summary: Get fresh products nearing end of life
+      operationId: GetNearingEndOfLifeFreshProducts
+      description: Retrieve fresh products with 7 or fewer days until end of life.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /product/eol/shelf:
+    get:
+      summary: Get shelf products nearing end of life
+      operationId: GetNearingEndOfLifeShelfProducts
+      description: Retrieve shelf products with 30 or fewer days until end of life.
+      tags:
+        - Product
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        Id:
+          type: integer
+          description: Unique identifier for the product
+        SKU:
+          type: string
+          pattern: '^[0-9]{5}$'
+          description: Product SKU identifier (5 digits)
+        Name:
+          type: string
+          description: Product name
+        Sold:
+          type: integer
+          description: Number of units sold in last 30 days
+          minimum: 0
+        InStock:
+          type: integer
+          description: Current inventory count
+          minimum: 0
+        Stolen:
+          type: integer
+          description: Number of units reported as stolen in last 30 days
+          minimum: 0
+        Damaged:
+          type: integer
+          description: Number of units reported as damaged in last 30 days
+          minimum: 0
+        EoLDays:
+          type: integer
+          description: Days until end of life
+          minimum: 0
+        CostPrice:
+          type: number
+          format: decimal
+          description: Cost price of the product
+          minimum: 0
+        SoldPrice:
+          type: number
+          format: decimal
+          description: Selling price of the product
+          minimum: 0
+        StoreNumber:
+          type: integer
+          description: Store identifier where the product is located
+          minimum: 0
+        Type:
+          type: string
+          description: Product type
+          enum: ['Fresh', 'Shelf']
+      required:
+        - Id
+        - SKU
+        - Name
+        - Type
